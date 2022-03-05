@@ -11,7 +11,7 @@ namespace Azimecha.Drawing.AGG.Interop {
         public static extern IntPtr AwCreateBitmap(int w, int h);
 
         [DllImport(AGGWRAP_DLL_NAME)]
-        public static extern IntPtr AwCreateBitmapOnBuffer(int w, int h, IntPtr pData, AwDataDestructor procDtor);
+        public static extern IntPtr AwCreateBitmapOnBuffer(int w, int h, [In] ref AwBufferInfo infBuffer);
 
         [DllImport(AGGWRAP_DLL_NAME)]
         public static extern bool AwGetBitmapSize(IntPtr hBitmap, out int nWidth, out int nHeight);

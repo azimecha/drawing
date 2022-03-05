@@ -90,7 +90,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Azimecha.Drawing.Interop.AGG\Azimecha.Drawing.AGG.csproj">
+    <ProjectReference Include="..\Azimecha.Drawing.AGG\Azimecha.Drawing.AGG.csproj">
       <Project>{2d7a730b-133f-4afa-8e55-887c7f373f6c}</Project>
       <Name>Azimecha.Drawing.AGG</Name>
     </ProjectReference>

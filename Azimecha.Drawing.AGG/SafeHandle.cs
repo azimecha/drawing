@@ -8,8 +8,19 @@ namespace Azimecha.Drawing.AGG {
         private IntPtr _hObject;
         private bool _bOwnsObject;
 
+        public SafeHandle() {
+            _hObject = IntPtr.Zero;
+            _bOwnsObject = false;
+        }
+
         public SafeHandle(IntPtr hObject, bool bOwnObject) {
             _hObject = hObject;
+            _bOwnsObject = bOwnObject;
+        }
+
+        public void TakeObject(IntPtr hObject, bool bOwnObject) {
+            if (Interlocked.CompareExchange(ref _hObject, hObject, IntPtr.Zero) != IntPtr.Zero)
+                throw new InvalidOperationException("The SafeHandle already contains a value");
             _bOwnsObject = bOwnObject;
         }
 
@@ -34,5 +45,14 @@ namespace Azimecha.Drawing.AGG {
             Dispose(bDisposing: true);
             GC.SuppressFinalize(this);
         }
+
+        public override string ToString()
+            => "{" + GetType().Name + ":" + Handle.ToInt64().ToString("X" + IntPtr.Size * 2) + "}";
+
+        public override bool Equals(object obj)
+            => (obj is SafeHandle h) && (_hObject == h._hObject);
+
+        public override int GetHashCode()
+            => Handle.GetHashCode();
     }
 }

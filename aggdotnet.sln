@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWinApp", "TestWinApp\TestWinApp.csproj", "{1C12F183-FAB0-44C4-9A17-16D4EFDA57BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azimecha.Drawing.AGG", "Azimecha.Drawing.Interop.AGG\Azimecha.Drawing.AGG.csproj", "{2D7A730B-133F-4AFA-8E55-887C7F373F6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azimecha.Drawing.AGG", "Azimecha.Drawing.AGG\Azimecha.Drawing.AGG.csproj", "{2D7A730B-133F-4AFA-8E55-887C7F373F6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azimecha.Drawing", "Azimecha.Drawing\Azimecha.Drawing.csproj", "{C36F4833-ECEF-459B-B644-205847C447B1}"
 EndProject

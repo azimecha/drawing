@@ -4,6 +4,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Azimecha.Drawing.AGG.Interop {
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    internal delegate void AwDataDestructor(IntPtr pData, IntPtr tag);
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct AwBufferInfo {
+        public IntPtr pData;
+        public ulong nDataSize;
+        public AwDataDestructor procDestructor;
+        public IntPtr tag;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     internal struct AwColor {
         public byte r;
@@ -36,7 +47,4 @@ namespace Azimecha.Drawing.AGG.Interop {
         public float fThickness;
         public bool bRounded;
     }
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate void AwDataDestructor(IntPtr pData);
 }
