@@ -20,7 +20,7 @@ namespace Azimecha.Drawing.AGG {
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 
             hBitmap.TakeObject(Interop.Functions.AwCreateBitmap(w, h), true);
-            if (hBitmap.Handle == IntPtr.Zero)
+            if (!hBitmap.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating empty {w}x{h} bitmap");
 
             _hBitmap = hBitmap;
@@ -45,7 +45,7 @@ namespace Azimecha.Drawing.AGG {
                 };
 
                 hBitmap.TakeObject(Interop.Functions.AwCreateBitmapOnBuffer(w, h, ref infBuffer), true);
-                if (hBitmap.Handle == IntPtr.Zero)
+                if (!hBitmap.IsHandleValid)
                     throw new ObjectCreationFailedException($"Error creating {w}x{h} bitmap");
 
                 gchBufferObject = null;
@@ -82,7 +82,7 @@ namespace Azimecha.Drawing.AGG {
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 
             hBitmap.TakeObject(Interop.Functions.AwDuplicateBitmap(_hBitmap.Handle), true);
-            if (hBitmap.Handle == IntPtr.Zero)
+            if (!hBitmap.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error duplicating bitmap {_hBitmap}");
 
             return new Bitmap(hBitmap);

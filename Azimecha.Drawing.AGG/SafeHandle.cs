@@ -9,7 +9,7 @@ namespace Azimecha.Drawing.AGG {
         private bool _bOwnsObject;
 
         public SafeHandle() {
-            _hObject = IntPtr.Zero;
+            _hObject = GetInvalidHandleValue();
             _bOwnsObject = false;
         }
 
@@ -19,18 +19,31 @@ namespace Azimecha.Drawing.AGG {
         }
 
         public void TakeObject(IntPtr hObject, bool bOwnObject) {
-            if (Interlocked.CompareExchange(ref _hObject, hObject, IntPtr.Zero) != IntPtr.Zero)
+            if (Interlocked.CompareExchange(ref _hObject, hObject, GetInvalidHandleValue()) != GetInvalidHandleValue())
                 throw new InvalidOperationException("The SafeHandle already contains a value");
             _bOwnsObject = bOwnObject;
         }
 
-        public IntPtr Handle => _hObject;
+        public IntPtr UncheckedHandle => _hObject;
+
+        public IntPtr Handle {
+            get {
+                IntPtr hObject = _hObject;
+                if (!CheckHandleValid(hObject))
+                    throw new InvalidOperationException($"The handle is not valid");
+                return hObject;
+            }
+        }
+
+        public bool IsHandleValid => CheckHandleValid(_hObject);
 
         protected abstract void CloseObjectHandle(IntPtr hObject);
+        protected virtual bool CheckHandleValid(IntPtr hObject) => hObject != GetInvalidHandleValue();
+        protected virtual IntPtr GetInvalidHandleValue() => IntPtr.Zero;
 
         protected void Dispose(bool bDisposing) {
-            IntPtr hObject = Interlocked.Exchange(ref _hObject, IntPtr.Zero);
-            if (_bOwnsObject && (hObject != IntPtr.Zero))
+            IntPtr hObject = Interlocked.Exchange(ref _hObject, GetInvalidHandleValue());
+            if (_bOwnsObject && CheckHandleValid(hObject))
                 CloseObjectHandle(hObject);
             _bOwnsObject = false;
         }
@@ -47,12 +60,12 @@ namespace Azimecha.Drawing.AGG {
         }
 
         public override string ToString()
-            => "{" + GetType().Name + ":" + Handle.ToInt64().ToString("X" + IntPtr.Size * 2) + "}";
+            => "{" + GetType().Name + ":" + _hObject.ToInt64().ToString("X" + IntPtr.Size * 2) + "}";
 
         public override bool Equals(object obj)
             => (obj is SafeHandle h) && (_hObject == h._hObject);
 
         public override int GetHashCode()
-            => Handle.GetHashCode();
+            => _hObject.GetHashCode();
     }
 }
