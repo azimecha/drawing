@@ -32,4 +32,10 @@ namespace Azimecha.Drawing {
         public DataAccessException(string strMessage) : base(strMessage) { }
         public DataAccessException(string strMessage, Exception exInner) : base(strMessage, exInner) { }
     }
+
+    public class DrawOperationFailedException : DrawingException {
+        public DrawOperationFailedException() : base() { }
+        public DrawOperationFailedException(string strMessage) : base(strMessage) { }
+        public DrawOperationFailedException(string strMessage, Exception exInner) : base(strMessage, exInner) { }
+    }
 }

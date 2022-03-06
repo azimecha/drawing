@@ -47,4 +47,8 @@ namespace Azimecha.Drawing.AGG.Interop {
         public float fThickness;
         public bool bRounded;
     }
+
+    internal enum AwQuality {
+        Good, Fast
+    }
 }

@@ -106,6 +106,8 @@ namespace Azimecha.Drawing.AGG {
         }
 
         public override string ToString() => _hPath.ToString();
+
+        internal SafePathHandle Handle => _hPath;
     }
 
     internal class SafePathHandle : SafeHandle {

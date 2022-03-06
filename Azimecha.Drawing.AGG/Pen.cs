@@ -17,6 +17,8 @@ namespace Azimecha.Drawing.AGG {
 
             Thickness = fThickness;
         }
+
+        internal SafePenHandle Handle => _hPen;
         
         public float Thickness { get; private set; }
 

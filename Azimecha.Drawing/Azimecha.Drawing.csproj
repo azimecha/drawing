@@ -55,10 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Color.cs" />
+    <Compile Include="DrawingContextExtender.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBitmap.cs" />
     <Compile Include="IBitmapDataAccessor.cs" />
     <Compile Include="IBrush.cs" />
+    <Compile Include="IDrawingContext.cs" />
     <Compile Include="IPath.cs" />
     <Compile Include="IPen.cs" />
     <Compile Include="NumericHelper.cs" />

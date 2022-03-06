@@ -111,5 +111,32 @@ namespace Azimecha.Drawing.AGG.Interop {
 
         [DllImport(AGGWRAP_DLL_NAME)]
         public static extern void AwDeletePen(IntPtr hPen);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreateContextOnBitmap(IntPtr hBitmap);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwSetDrawQuality(IntPtr hContext, AwQuality qual);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwFillContext(IntPtr hContext, IntPtr hBrush);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwFillPath(IntPtr hContext, IntPtr hBrush, IntPtr hPath);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwFillRectangle(IntPtr hContext, IntPtr hBrush, int x, int y, int w, int h);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwDrawPath(IntPtr hContext, IntPtr hPen, IntPtr hPath);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwDrawRectangle(IntPtr hContext, IntPtr hPen, int x, int y, int w, int h);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwDrawLine(IntPtr hContext, IntPtr hPen, int x1, int y1, int x2, int y2);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern void AwDeleteContext(IntPtr hContext);
     }
 }

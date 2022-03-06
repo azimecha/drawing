@@ -13,6 +13,7 @@ namespace TestWinApp {
         private BitmapInfoHeader _bmih = new BitmapInfoHeader();
         private Azimecha.Drawing.ISolidBrush _brRed;
         private Azimecha.Drawing.IBrush _brCur;
+        private Azimecha.Drawing.IDrawingContext _ctx;
 
         public TestForm() {
             InitializeComponent();
@@ -22,7 +23,6 @@ namespace TestWinApp {
             byte[] arrData = GetImageData(Properties.Resources.cringe);
             _bmImage = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cringe.Width, Properties.Resources.cringe.Height, arrData);
             _bmCopy = _bmImage.Duplicate();
-            _bmImage.Dispose();
 
             _bmih.biSize = (uint)Marshal.SizeOf(_bmih);
             _bmih.biWidth = _bmCopy.Width;
@@ -32,6 +32,8 @@ namespace TestWinApp {
             _bmih.biSizeImage = (uint)_bmCopy.DataSize;
 
             _brRed = new Azimecha.Drawing.AGG.SolidBrush(255, 0, 0, 128);
+
+            _ctx = _bmCopy.CreateContext();
         }
 
         [DllImport("gdi32")]
@@ -40,6 +42,7 @@ namespace TestWinApp {
 
         private void TestForm_Paint(object sender, PaintEventArgs e) {
             System.Drawing.Graphics gfx = e.Graphics;
+
             IntPtr hDC = gfx.GetHdc();
             try {
                 using (Azimecha.Drawing.IBitmapDataAccessor data = _bmCopy.AccessData(true, false)) {
@@ -50,17 +53,33 @@ namespace TestWinApp {
             } finally {
                 gfx.ReleaseHdc(hDC);
             }
+
+            gfx.ExcludeClip(new System.Drawing.Rectangle(0, 0, _bmCopy.Width, _bmCopy.Height));
+            base.OnPaintBackground(new PaintEventArgs(gfx, e.ClipRectangle));
         }
 
         private void TestForm_MouseMove(object sender, MouseEventArgs e) {
-            if ((e.Button & MouseButtons.Left) != 0) {
-
+            if (((e.Button & MouseButtons.Left) != 0) && !(_brCur is null)) {
+                _ctx.FillCircle(_brCur, e.X, e.Y, 50.0f);
+                Invalidate();
             }
         }
 
         private void RedBrushBtn_Click(object sender, EventArgs e) {
             _brCur = _brRed;
         }
+
+        [DllImport("kernel32")]
+        private static extern void RtlMoveMemory(IntPtr pDest, IntPtr pSrc, IntPtr nLength);
+
+        private void ClearBtn_Click(object sender, EventArgs e) {
+            using (Azimecha.Drawing.IBitmapDataAccessor dataImage = _bmImage.AccessData(true, false))
+            using (Azimecha.Drawing.IBitmapDataAccessor dataCopy = _bmCopy.AccessData(false, true))
+                RtlMoveMemory(dataCopy.Pointer, dataImage.Pointer, (IntPtr)dataCopy.Size);
+            Invalidate();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e) { }
 
         private byte[] GetImageData(System.Drawing.Bitmap sbm) {
             System.Drawing.Imaging.BitmapData data = sbm.LockBits(

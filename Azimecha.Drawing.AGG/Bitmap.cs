@@ -132,6 +132,8 @@ namespace Azimecha.Drawing.AGG {
                 throw new ArgumentException($"Array size {arrData.Length} does not match bitmap data size {DataSize}");
             Marshal.Copy(arrData, 0, GetDataPointer(), (int)DataSize);
         }
+
+        public IDrawingContext CreateContext() => DrawingContext.CreateFullContext(this);
     }
 
     internal class SafeBitmapHandle : SafeHandle {

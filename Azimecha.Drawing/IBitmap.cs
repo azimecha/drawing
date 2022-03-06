@@ -15,6 +15,8 @@ namespace Azimecha.Drawing {
         IBitmapDataAccessor AccessData(bool bRead, bool bWrite);
         byte[] ReadData();
         void WriteData(byte[] arrData);
+
+        IDrawingContext CreateContext();
     }
 
     public enum PixelFormat {

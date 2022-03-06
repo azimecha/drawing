@@ -57,6 +57,7 @@
     <Compile Include="Bitmap.cs" />
     <Compile Include="DataBuffer.cs" />
     <Compile Include="Brush.cs" />
+    <Compile Include="DrawingContext.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="LinearGradientBrush.cs" />
     <Compile Include="Path.cs" />
