@@ -118,13 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cpp_vs_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cpp vs c.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cringe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cringe.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursed_wikihow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cursed wikihow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="nft32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nft32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="smug_trollface_cutout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\smug trollface cutout.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="vim_can_cutout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\vim can cutout.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="we_are_not_the_same" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\we are not the same.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

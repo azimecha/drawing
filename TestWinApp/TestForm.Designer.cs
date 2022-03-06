@@ -27,6 +27,10 @@
             this.ClearBtn = new System.Windows.Forms.Button();
             this.PatBrushBtn = new System.Windows.Forms.Button();
             this.StretchBrushBtn = new System.Windows.Forms.Button();
+            this.FitVertBrushBtn = new System.Windows.Forms.Button();
+            this.FillVertBrushBtn = new System.Windows.Forms.Button();
+            this.FillHorizBrushBtn = new System.Windows.Forms.Button();
+            this.FitHorizBrushBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // RedBrushBtn
@@ -73,12 +77,60 @@
             this.StretchBrushBtn.UseVisualStyleBackColor = true;
             this.StretchBrushBtn.Click += new System.EventHandler(this.StretchBrushBtn_Click);
             // 
+            // FitVertBrushBtn
+            // 
+            this.FitVertBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FitVertBrushBtn.Location = new System.Drawing.Point(713, 299);
+            this.FitVertBrushBtn.Name = "FitVertBrushBtn";
+            this.FitVertBrushBtn.Size = new System.Drawing.Size(75, 23);
+            this.FitVertBrushBtn.TabIndex = 4;
+            this.FitVertBrushBtn.Text = "Tr. Fit V";
+            this.FitVertBrushBtn.UseVisualStyleBackColor = true;
+            this.FitVertBrushBtn.Click += new System.EventHandler(this.FitVertBrushBtn_Click);
+            // 
+            // FillVertBrushBtn
+            // 
+            this.FillVertBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FillVertBrushBtn.Location = new System.Drawing.Point(713, 270);
+            this.FillVertBrushBtn.Name = "FillVertBrushBtn";
+            this.FillVertBrushBtn.Size = new System.Drawing.Size(75, 23);
+            this.FillVertBrushBtn.TabIndex = 5;
+            this.FillVertBrushBtn.Text = "Op. Fill V";
+            this.FillVertBrushBtn.UseVisualStyleBackColor = true;
+            this.FillVertBrushBtn.Click += new System.EventHandler(this.FillVertBrushBtn_Click);
+            // 
+            // FillHorizBrushBtn
+            // 
+            this.FillHorizBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FillHorizBrushBtn.Location = new System.Drawing.Point(713, 212);
+            this.FillHorizBrushBtn.Name = "FillHorizBrushBtn";
+            this.FillHorizBrushBtn.Size = new System.Drawing.Size(75, 23);
+            this.FillHorizBrushBtn.TabIndex = 7;
+            this.FillHorizBrushBtn.Text = "Op. Fill H";
+            this.FillHorizBrushBtn.UseVisualStyleBackColor = true;
+            this.FillHorizBrushBtn.Click += new System.EventHandler(this.FillHorizBrushBtn_Click);
+            // 
+            // FitHorizBrushBtn
+            // 
+            this.FitHorizBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FitHorizBrushBtn.Location = new System.Drawing.Point(713, 241);
+            this.FitHorizBrushBtn.Name = "FitHorizBrushBtn";
+            this.FitHorizBrushBtn.Size = new System.Drawing.Size(75, 23);
+            this.FitHorizBrushBtn.TabIndex = 6;
+            this.FitHorizBrushBtn.Text = "Op. Fit H";
+            this.FitHorizBrushBtn.UseVisualStyleBackColor = true;
+            this.FitHorizBrushBtn.Click += new System.EventHandler(this.FitHorizBrushBtn_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.FillHorizBrushBtn);
+            this.Controls.Add(this.FitHorizBrushBtn);
+            this.Controls.Add(this.FillVertBrushBtn);
+            this.Controls.Add(this.FitVertBrushBtn);
             this.Controls.Add(this.StretchBrushBtn);
             this.Controls.Add(this.PatBrushBtn);
             this.Controls.Add(this.ClearBtn);
@@ -100,6 +152,10 @@
         private System.Windows.Forms.Button ClearBtn;
         private System.Windows.Forms.Button PatBrushBtn;
         private System.Windows.Forms.Button StretchBrushBtn;
+        private System.Windows.Forms.Button FitVertBrushBtn;
+        private System.Windows.Forms.Button FillVertBrushBtn;
+        private System.Windows.Forms.Button FillHorizBrushBtn;
+        private System.Windows.Forms.Button FitHorizBrushBtn;
     }
 }
 

@@ -11,7 +11,7 @@ namespace TestWinApp {
     public partial class TestForm : Form {
         private Azimecha.Drawing.IBitmap _bmImage, _bmCopy;
         private BitmapInfoHeader _bmih = new BitmapInfoHeader();
-        private Azimecha.Drawing.IBrush _brCur, _brRed, _brPattern, _brStretch;
+        private Azimecha.Drawing.IBrush _brCur, _brRed, _brPattern, _brStretch, _brFillH, _brFitH, _brFillV, _brFitV;
         private Azimecha.Drawing.IDrawingContext _ctx;
         private Azimecha.Drawing.IPen _penCur;
         private int _nMouseX1, _nMouseX2, _nMouseX3;
@@ -43,6 +43,22 @@ namespace TestWinApp {
             using (Azimecha.Drawing.AGG.Bitmap bmStretch = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.smug_trollface_cutout.Width,
                 Properties.Resources.smug_trollface_cutout.Height, GetImageData(Properties.Resources.smug_trollface_cutout)))
                 _brStretch = new Azimecha.Drawing.AGG.ScaledBrush(bmStretch, Azimecha.Drawing.ScaleMode.Stretch);
+
+            using (Azimecha.Drawing.AGG.Bitmap bmHoriz1 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cursed_wikihow.Width,
+                Properties.Resources.cursed_wikihow.Height, GetImageData(Properties.Resources.cursed_wikihow))) 
+                _brFillH = new Azimecha.Drawing.AGG.ScaledBrush(bmHoriz1, Azimecha.Drawing.ScaleMode.Fill);
+
+            using (Azimecha.Drawing.AGG.Bitmap bmHoriz2 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cpp_vs_c.Width,
+                Properties.Resources.cpp_vs_c.Height, GetImageData(Properties.Resources.cpp_vs_c)))
+                _brFitH = new Azimecha.Drawing.AGG.ScaledBrush(bmHoriz2, Azimecha.Drawing.ScaleMode.Fit);
+
+            using (Azimecha.Drawing.AGG.Bitmap bmVert1 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.we_are_not_the_same.Width,
+                Properties.Resources.we_are_not_the_same.Height, GetImageData(Properties.Resources.we_are_not_the_same)))
+                _brFillV = new Azimecha.Drawing.AGG.ScaledBrush(bmVert1, Azimecha.Drawing.ScaleMode.Fill);
+
+            using (Azimecha.Drawing.AGG.Bitmap bmVert2 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.vim_can_cutout.Width,
+                Properties.Resources.vim_can_cutout.Height, GetImageData(Properties.Resources.vim_can_cutout)))
+                _brFitV = new Azimecha.Drawing.AGG.ScaledBrush(bmVert2, Azimecha.Drawing.ScaleMode.Fit);
 
             _ctx = _bmCopy.CreateContext();
         }
@@ -94,6 +110,27 @@ namespace TestWinApp {
             _nMouseY1 = e.Y;
 
             _nMouseValid++;
+        }
+
+        private void FillHorizBrushBtn_Click(object sender, EventArgs e) {
+            _brCur = _brFillH;
+            _penCur = new Azimecha.Drawing.AGG.Pen((Azimecha.Drawing.AGG.Brush)_brCur, 32.0f);
+        }
+
+        private void FitHorizBrushBtn_Click(object sender, EventArgs e) {
+            _brCur = _brFitH;
+            _penCur = new Azimecha.Drawing.AGG.Pen((Azimecha.Drawing.AGG.Brush)_brCur, 32.0f);
+        }
+
+        private void FillVertBrushBtn_Click(object sender, EventArgs e) {
+            _brCur = _brFillV;
+            _penCur = new Azimecha.Drawing.AGG.Pen((Azimecha.Drawing.AGG.Brush)_brCur, 32.0f);
+
+        }
+
+        private void FitVertBrushBtn_Click(object sender, EventArgs e) {
+            _brCur = _brFitV;
+            _penCur = new Azimecha.Drawing.AGG.Pen((Azimecha.Drawing.AGG.Brush)_brCur, 32.0f);
         }
 
         private void StretchBrushBtn_Click(object sender, EventArgs e) {

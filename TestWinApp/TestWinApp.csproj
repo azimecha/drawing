@@ -108,5 +108,17 @@
   <ItemGroup>
     <None Include="Resources\smug trollface cutout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\we are not the same.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cpp vs c.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursed wikihow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vim can cutout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

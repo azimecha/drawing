@@ -63,9 +63,29 @@ namespace TestWinApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cpp_vs_c {
+            get {
+                object obj = ResourceManager.GetObject("cpp_vs_c", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cringe {
             get {
                 object obj = ResourceManager.GetObject("cringe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cursed_wikihow {
+            get {
+                object obj = ResourceManager.GetObject("cursed_wikihow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -86,6 +106,26 @@ namespace TestWinApp.Properties {
         internal static System.Drawing.Bitmap smug_trollface_cutout {
             get {
                 object obj = ResourceManager.GetObject("smug_trollface_cutout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vim_can_cutout {
+            get {
+                object obj = ResourceManager.GetObject("vim_can_cutout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap we_are_not_the_same {
+            get {
+                object obj = ResourceManager.GetObject("we_are_not_the_same", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
