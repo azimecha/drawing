@@ -102,5 +102,11 @@
   <ItemGroup>
     <None Include="Resources\cringe.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nft32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\smug trollface cutout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
