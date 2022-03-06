@@ -20,4 +20,16 @@ namespace Azimecha.Drawing {
         public InfoQueryFailedException(string strMessage) : base(strMessage) { }
         public InfoQueryFailedException(string strMessage, Exception exInner) : base(strMessage, exInner) { }
     }
+
+    public class PathOperationFailedException : DrawingException {
+        public PathOperationFailedException() : base() { }
+        public PathOperationFailedException(string strMessage) : base(strMessage) { }
+        public PathOperationFailedException(string strMessage, Exception exInner) : base(strMessage, exInner) { }
+    }
+
+    public class DataAccessException : DrawingException {
+        public DataAccessException() : base() { }
+        public DataAccessException(string strMessage) : base(strMessage) { }
+        public DataAccessException(string strMessage, Exception exInner) : base(strMessage, exInner) { }
+    }
 }

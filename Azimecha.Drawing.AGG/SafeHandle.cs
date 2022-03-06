@@ -42,6 +42,7 @@ namespace Azimecha.Drawing.AGG {
         protected virtual IntPtr GetInvalidHandleValue() => IntPtr.Zero;
 
         protected void Dispose(bool bDisposing) {
+            // Do not change this code. Override CloseObjectHandle.
             IntPtr hObject = Interlocked.Exchange(ref _hObject, GetInvalidHandleValue());
             if (_bOwnsObject && CheckHandleValid(hObject))
                 CloseObjectHandle(hObject);
@@ -49,12 +50,12 @@ namespace Azimecha.Drawing.AGG {
         }
 
         ~SafeHandle() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            // Do not change this code. Override CloseObjectHandle.
             Dispose(bDisposing: false);
         }
 
         public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            // Do not change this code. Override CloseObjectHandle.
             Dispose(bDisposing: true);
             GC.SuppressFinalize(this);
         }

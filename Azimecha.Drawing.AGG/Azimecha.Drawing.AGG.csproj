@@ -55,9 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bitmap.cs" />
-    <Compile Include="BitmapDataBuffer.cs" />
+    <Compile Include="DataBuffer.cs" />
+    <Compile Include="Brush.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="LinearGradientBrush.cs" />
+    <Compile Include="Path.cs" />
+    <Compile Include="PatternBrush.cs" />
+    <Compile Include="Pen.cs" />
     <Compile Include="SafeHandle.cs" />
+    <Compile Include="ScaledBrush.cs" />
+    <Compile Include="SolidBrush.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

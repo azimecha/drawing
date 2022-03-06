@@ -11,6 +11,10 @@ namespace Azimecha.Drawing {
         PixelFormat Format { get; }
 
         IBitmap Duplicate();
+
+        IBitmapDataAccessor AccessData(bool bRead, bool bWrite);
+        byte[] ReadData();
+        void WriteData(byte[] arrData);
     }
 
     public enum PixelFormat {

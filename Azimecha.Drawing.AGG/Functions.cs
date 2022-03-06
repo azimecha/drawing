@@ -20,9 +20,96 @@ namespace Azimecha.Drawing.AGG.Interop {
         public static extern bool AwGetBitmapDataSize(IntPtr hBitmap, out int nStride, out int nFullSize);
 
         [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwAccessBitmapData(IntPtr hBitmap);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
         public static extern IntPtr AwDuplicateBitmap(IntPtr hBitmap);
 
         [DllImport(AGGWRAP_DLL_NAME)]
         public static extern void AwDeleteBitmap(IntPtr hBitmap);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreateSolidBrush(byte r, byte g, byte b, byte a);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreateLinearGradientBrush([MarshalAs(UnmanagedType.LPArray)] [In] AwGradientStop[] arrStops, 
+            int nStops, float fAngle);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreatePatternBrush(IntPtr hBitmap);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreateScaledBrush(IntPtr hBitmap, AwScaleMode mode);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern void AwDeleteBrush(IntPtr hBrush);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathRectangle(IntPtr hPath, float x, float y, float w, float h);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathRoundedRectangle(IntPtr hPath, float x, float y, float w, float h,
+            float fRadius);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreatePath();
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathCircle(IntPtr hPath, float x, float y, float fRadius);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathEllipse(IntPtr hPath, float x, float y, float w, float h);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathArc(IntPtr hPath, float x, float y, float w, float h, float fStartAngle,
+            float fSweepAngle);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathChord(IntPtr hPath, float x, float y, float w, float h, float fStartAngle,
+            float fSweepAngle);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathPieSlice(IntPtr hPath, float x, float y, float w, float h, float fStartAngle,
+            float fSweepAngle);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathLine(IntPtr hPath, float x1, float y1, float x2, float y2);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathTriangle(IntPtr hPath, float x1, float y1, float x2, float y2, float x3,
+            float y3);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathPolyline(IntPtr hPath, [MarshalAs(UnmanagedType.LPArray)] [In] AwPathPoint[] arrPoints, int nPoints);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPathPolygon(IntPtr hPath, [MarshalAs(UnmanagedType.LPArray)][In] AwPathPoint[] arrPoints, int nPoints);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwAddPath(IntPtr hTargetPath, IntPtr hPathToAdd);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwPathMoveTo(IntPtr hPath, float x, float y);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwPathLineTo(IntPtr hPath, float x, float y);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwClosePathShape(IntPtr hPath);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwClearPath(IntPtr hPath);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern void AwDeletePath(IntPtr hPath);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern IntPtr AwCreatePen(IntPtr hBrush, [In] ref AwPenParams parPen);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern bool AwGetPenParams(IntPtr hPen, out AwPenParams parPen);
+
+        [DllImport(AGGWRAP_DLL_NAME)]
+        public static extern void AwDeletePen(IntPtr hPen);
     }
 }

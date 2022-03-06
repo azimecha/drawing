@@ -28,7 +28,7 @@ namespace Azimecha.Drawing.AGG {
             _nHeight = h;
         }
 
-        public Bitmap(int w, int h, IBitmapDataBuffer buf, bool bDisposeBuffer = true) {
+        public Bitmap(int w, int h, IDataBuffer buf, bool bDisposeBuffer = true) {
             int nExpectedLength = w * h * 4;
             if (buf.DataSize < nExpectedLength)
                 throw new ArgumentException($"Data buffer too small for {w}x{h} bitmap: expected {nExpectedLength} bytes, got {buf.DataSize}");
@@ -63,6 +63,7 @@ namespace Azimecha.Drawing.AGG {
         public long Stride => _nWidth * 4;
         public long DataSize => Stride * _nHeight;
         public PixelFormat Format => PixelFormat.ARGB32Premul;
+        internal SafeBitmapHandle Handle => _hBitmap;
 
         public static Bitmap CreateOnArray(int w, int h, byte[] arrData) {
             int nExpectedLength = w * h * 4;
@@ -107,11 +108,48 @@ namespace Azimecha.Drawing.AGG {
             GCHandle gchBufferObject = GCHandle.FromIntPtr(hGCHandle);
             gchBufferObject.Free();
         }
+
+        public override string ToString() => _hBitmap.ToString();
+        
+        internal IntPtr GetDataPointer() {
+            IntPtr pData = Interop.Functions.AwAccessBitmapData(_hBitmap.Handle);
+            if (pData == IntPtr.Zero)
+                throw new DataAccessException($"Error accessing data of bitmap {_hBitmap}");
+            return pData;
+        }
+
+        public IBitmapDataAccessor AccessData(bool bRead, bool bWrite)
+            => new BitmapDataAccessor(this);
+
+        public byte[] ReadData() {
+            byte[] arrData = new byte[DataSize];
+            Marshal.Copy(GetDataPointer(), arrData, 0, arrData.Length);
+            return arrData;
+        }
+
+        public void WriteData(byte[] arrData) {
+            if (arrData.Length != DataSize)
+                throw new ArgumentException($"Array size {arrData.Length} does not match bitmap data size {DataSize}");
+            Marshal.Copy(arrData, 0, GetDataPointer(), (int)DataSize);
+        }
     }
 
     internal class SafeBitmapHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.AwDeleteBitmap(hObject);
         }
+    }
+
+    internal class BitmapDataAccessor : IBitmapDataAccessor {
+        private Bitmap _bm;
+
+        public BitmapDataAccessor(Bitmap bm) {
+            Pointer = bm.GetDataPointer();
+            _bm = bm;
+        }
+
+        public IntPtr Pointer { get; private set; }
+        public long Size => _bm.DataSize;
+        public void Dispose() { }
     }
 }

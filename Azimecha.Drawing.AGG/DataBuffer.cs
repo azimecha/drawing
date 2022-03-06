@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading;
 
 namespace Azimecha.Drawing.AGG {
-    public interface IBitmapDataBuffer : IDisposable {
+    public interface IDataBuffer : IDisposable {
         IntPtr DataPointer { get; }
         long DataSize { get; }
     }
 
-    internal class PinnedArrayDataBuffer<T> : IBitmapDataBuffer {
+    internal class PinnedArrayDataBuffer<T> : IDataBuffer {
         private SafePinnedGCHandle _hObject;
         private T[] _arrData;
 

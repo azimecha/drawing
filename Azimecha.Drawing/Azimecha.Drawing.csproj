@@ -54,9 +54,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBitmap.cs" />
+    <Compile Include="IBitmapDataAccessor.cs" />
+    <Compile Include="IBrush.cs" />
+    <Compile Include="IPath.cs" />
+    <Compile Include="IPen.cs" />
+    <Compile Include="NumericHelper.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="ScaleMode.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
