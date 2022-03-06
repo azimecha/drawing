@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Azimecha.Drawing.Internal {
@@ -10,6 +11,13 @@ namespace Azimecha.Drawing.Internal {
             foreach (T obj in enuObjects)
                 lst.Add(obj);
             return lst.ToArray();
+        }
+
+        public static T TryGetAttribute<T>(Type type) where T : Attribute {
+            foreach (Attribute attrib in type.GetCustomAttributes(true))
+                if (attrib is T)
+                    return (T)attrib;
+            return null;
         }
     }
 

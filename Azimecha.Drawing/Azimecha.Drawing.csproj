@@ -67,7 +67,10 @@
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
+    <Compile Include="SafeHandle.cs" />
     <Compile Include="ScaleMode.cs" />
+    <Compile Include="SmartLoader.cs" />
+    <Compile Include="SystemInfo.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Azimecha.Drawing.AGG {
-    internal abstract class SafeHandle : IDisposable {
+namespace Azimecha.Drawing.Internal {
+    public abstract class SafeHandle : IDisposable {
         private IntPtr _hObject;
         private bool _bOwnsObject;
 

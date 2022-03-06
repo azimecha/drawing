@@ -7,7 +7,7 @@ namespace Azimecha.Drawing.AGG {
         public SolidBrush(Color clr) : this(clr.R, clr.G, clr.B, clr.A) { }
 
         public SolidBrush(byte r, byte g, byte b, byte a = 255) {
-            Handle.TakeObject(Interop.Functions.AwCreateSolidBrush(r, g, b, a), true);
+            Handle.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateSolidBrush>()(r, g, b, a), true);
             if (!Handle.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating solid brush with color R={r} G={g} B={b} A={a}");
 

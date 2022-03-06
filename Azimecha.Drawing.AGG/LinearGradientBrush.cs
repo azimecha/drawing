@@ -21,7 +21,7 @@ namespace Azimecha.Drawing.AGG {
 
             Interop.AwGradientStop[] arrStops = lstStops.ToArray();
 
-            Handle.TakeObject(Interop.Functions.AwCreateLinearGradientBrush(arrStops, arrStops.Length, fAngle), true);
+            Handle.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateLinearGradientBrush>()(arrStops, arrStops.Length, fAngle), true);
             if (!Handle.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating linear gradient brush with {arrStops.Length} stops");
 

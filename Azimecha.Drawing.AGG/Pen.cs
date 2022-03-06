@@ -11,7 +11,7 @@ namespace Azimecha.Drawing.AGG {
                     fThickness = fThickness
             };
 
-            _hPen.TakeObject(Interop.Functions.AwCreatePen(brush.Handle.Handle, ref parPen), true);
+            _hPen.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreatePen>()(brush.Handle.Handle, ref parPen), true);
             if (!_hPen.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating pen of thickness {fThickness} from brush {brush}");
 
@@ -25,9 +25,9 @@ namespace Azimecha.Drawing.AGG {
         public override string ToString() => _hPen.ToString();
     }
 
-    internal class SafePenHandle : SafeHandle {
+    internal class SafePenHandle : Internal.SafeHandle {
         protected override void CloseObjectHandle(IntPtr hPen) {
-            Interop.Functions.AwDeletePen(hPen);
+            Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeletePen>()(hPen);
         }
     }
 }

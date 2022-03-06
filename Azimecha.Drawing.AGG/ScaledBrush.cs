@@ -28,7 +28,7 @@ namespace Azimecha.Drawing.AGG {
                     throw new NotSupportedException($"ScaledBrush does not support the {mode} scaling mode");
             }
 
-            Handle.TakeObject(Interop.Functions.AwCreateScaledBrush(bm.Handle.Handle, modeInternal), true);
+            Handle.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateScaledBrush>()(bm.Handle.Handle, modeInternal), true);
             if (!Handle.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating ScaledBrush from bitmap {bm} using scale mode {mode}");
 

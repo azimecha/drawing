@@ -9,7 +9,7 @@ namespace Azimecha.Drawing.AGG {
         private bool _bHighQuality = true;
 
         public DrawingContext(Bitmap bmTarget) {
-            _hContext.TakeObject(Interop.Functions.AwCreateContextOnBitmap(bmTarget.Handle.Handle), true);
+            _hContext.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateContextOnBitmap>()(bmTarget.Handle.Handle), true);
             if (!_hContext.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating drawing context on bitmap {bmTarget}");
 
@@ -23,7 +23,7 @@ namespace Azimecha.Drawing.AGG {
             get => _bHighQuality;
             set {
                 if (_bHighQuality != value) {
-                    if (!Interop.Functions.AwSetDrawQuality(_hContext.Handle, value ? Interop.AwQuality.Good : Interop.AwQuality.Fast))
+                    if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwSetDrawQuality>()(_hContext.Handle, value ? Interop.AwQuality.Good : Interop.AwQuality.Fast))
                         throw new DrawOperationFailedException("Error setting draw quality to " + (value ? "high" : "low") + " quality");
                     _bHighQuality = value;
                 }
@@ -36,39 +36,39 @@ namespace Azimecha.Drawing.AGG {
         }
 
         public void DrawLine(IPen pen, int x1, int y1, int x2, int y2) {
-            if (!Interop.Functions.AwDrawLine(_hContext.Handle, ((Pen)pen).Handle.Handle, x1, y1, x2, y2))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwDrawLine>()(_hContext.Handle, ((Pen)pen).Handle.Handle, x1, y1, x2, y2))
                 throw new DrawOperationFailedException($"Error drawing line from X={x1} Y={y1} to X={x2} Y={y2} using pen {pen}");
         }
 
         public void DrawPath(IPen pen, IPath path) {
-            if (!Interop.Functions.AwDrawPath(_hContext.Handle, ((Pen)pen).Handle.Handle, ((Path)path).Handle.Handle))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwDrawPath>()(_hContext.Handle, ((Pen)pen).Handle.Handle, ((Path)path).Handle.Handle))
                 throw new DrawOperationFailedException($"Error drawing path {path} using pen {pen}");
         }
 
         public void DrawRectangle(IPen pen, int x, int y, int w, int h) {
-            if (!Interop.Functions.AwDrawRectangle(_hContext.Handle, ((Pen)pen).Handle.Handle, x, y, w, h))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwDrawRectangle>()(_hContext.Handle, ((Pen)pen).Handle.Handle, x, y, w, h))
                 throw new DrawOperationFailedException($"Error drawing rectangle of size W={w} H={h} at location X={x} Y={y} using pen {pen}");
         }
 
         public void Fill(IBrush brFill) {
-            if (!Interop.Functions.AwFillContext(_hContext.Handle, ((Brush)brFill).Handle.Handle))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwFillContext>()(_hContext.Handle, ((Brush)brFill).Handle.Handle))
                 throw new DrawOperationFailedException($"Error filling context using brush {brFill}");
         }
 
         public void FillPath(IBrush brFill, IPath path) {
-            if (!Interop.Functions.AwFillPath(_hContext.Handle, ((Brush)brFill).Handle.Handle, ((Path)path).Handle.Handle))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwFillPath>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, ((Path)path).Handle.Handle))
                 throw new DrawOperationFailedException($"Error filling path {path} using brush {brFill}");
         }
 
         public void FillRectangle(IBrush brFill, int x, int y, int w, int h) {
-            if (!Interop.Functions.AwDrawRectangle(_hContext.Handle, ((Brush)brFill).Handle.Handle, x, y, w, h))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwDrawRectangle>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, x, y, w, h))
                 throw new DrawOperationFailedException($"Error filling rectangle of size W={w} H={h} at location X={x} Y={y} using brush {brFill}");
         }
     }
 
-    internal class SafeContextHandle : SafeHandle {
+    internal class SafeContextHandle : Internal.SafeHandle {
         protected override void CloseObjectHandle(IntPtr hContext) {
-            Interop.Functions.AwDeleteContext(hContext);
+            Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteContext>()(hContext);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Azimecha.Drawing.AGG {
         private int _nWidth, _nHeight;
 
         internal Bitmap(SafeBitmapHandle hBitmap) {
-            if (!Interop.Functions.AwGetBitmapSize(hBitmap.Handle, out _nWidth, out _nHeight))
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwGetBitmapSize>()(hBitmap.Handle, out _nWidth, out _nHeight))
                 throw new InfoQueryFailedException($"Unable to get size of bitmap {hBitmap}");
 
             _hBitmap = hBitmap;
@@ -19,7 +19,7 @@ namespace Azimecha.Drawing.AGG {
         public Bitmap(int w, int h) {
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 
-            hBitmap.TakeObject(Interop.Functions.AwCreateBitmap(w, h), true);
+            hBitmap.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateBitmap>()(w, h), true);
             if (!hBitmap.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error creating empty {w}x{h} bitmap");
 
@@ -44,7 +44,7 @@ namespace Azimecha.Drawing.AGG {
                     tag = GCHandle.ToIntPtr(gchBufferObject.Value)
                 };
 
-                hBitmap.TakeObject(Interop.Functions.AwCreateBitmapOnBuffer(w, h, ref infBuffer), true);
+                hBitmap.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateBitmapOnBuffer>()(w, h, ref infBuffer), true);
                 if (!hBitmap.IsHandleValid)
                     throw new ObjectCreationFailedException($"Error creating {w}x{h} bitmap");
 
@@ -82,7 +82,7 @@ namespace Azimecha.Drawing.AGG {
         public Bitmap Duplicate() {
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 
-            hBitmap.TakeObject(Interop.Functions.AwDuplicateBitmap(_hBitmap.Handle), true);
+            hBitmap.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwDuplicateBitmap>()(_hBitmap.Handle), true);
             if (!hBitmap.IsHandleValid)
                 throw new ObjectCreationFailedException($"Error duplicating bitmap {_hBitmap}");
 
@@ -112,7 +112,7 @@ namespace Azimecha.Drawing.AGG {
         public override string ToString() => _hBitmap.ToString();
         
         internal IntPtr GetDataPointer() {
-            IntPtr pData = Interop.Functions.AwAccessBitmapData(_hBitmap.Handle);
+            IntPtr pData = Interop.Functions.Loader.GetMethod<Interop.Functions.AwAccessBitmapData>()(_hBitmap.Handle);
             if (pData == IntPtr.Zero)
                 throw new DataAccessException($"Error accessing data of bitmap {_hBitmap}");
             return pData;
@@ -136,9 +136,9 @@ namespace Azimecha.Drawing.AGG {
         public IDrawingContext CreateContext() => DrawingContext.CreateFullContext(this);
     }
 
-    internal class SafeBitmapHandle : SafeHandle {
+    internal class SafeBitmapHandle : Internal.SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
-            Interop.Functions.AwDeleteBitmap(hObject);
+            Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteBitmap>()(hObject);
         }
     }
 

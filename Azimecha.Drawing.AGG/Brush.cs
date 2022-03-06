@@ -9,9 +9,9 @@ namespace Azimecha.Drawing.AGG {
         public override string ToString() => _hBrush.ToString();
     }
 
-    internal class SafeBrushHandle : SafeHandle {
+    internal class SafeBrushHandle : Internal.SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
-            Interop.Functions.AwDeleteBrush(hObject);
+            Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteBrush>()(hObject);
         }
     }
 }

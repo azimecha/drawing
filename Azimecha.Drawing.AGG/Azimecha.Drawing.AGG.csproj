@@ -63,7 +63,6 @@
     <Compile Include="Path.cs" />
     <Compile Include="PatternBrush.cs" />
     <Compile Include="Pen.cs" />
-    <Compile Include="SafeHandle.cs" />
     <Compile Include="ScaledBrush.cs" />
     <Compile Include="SolidBrush.cs" />
     <Compile Include="Types.cs" />
@@ -76,10 +75,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="aggwrap.dll">
+    <Content Include="aggwrap32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="aggwrap.pdb">
+    <Content Include="aggwrap64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

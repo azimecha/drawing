@@ -28,7 +28,7 @@ namespace Azimecha.Drawing.AGG {
         }
     }
 
-    internal class SafePinnedGCHandle : SafeHandle {
+    internal class SafePinnedGCHandle : Internal.SafeHandle {
         public SafePinnedGCHandle(object obj) : base(GCHandle.ToIntPtr(GCHandle.Alloc(obj, GCHandleType.Pinned)), true) { }
         public SafePinnedGCHandle(IntPtr hObject, bool bOwnObject) : base(hObject, bOwnObject) { }
 
