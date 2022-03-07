@@ -5,6 +5,9 @@ using System.Text;
 namespace Azimecha.Drawing {
     public interface IDrawingContextCore : IDisposable {
         bool HighQuality { get; set; }
+        
+        int Width { get; }
+        int Height { get; }
 
         void Fill(IBrush brFill);
         void FillPath(IBrush brFill, IPath path);
@@ -13,6 +16,8 @@ namespace Azimecha.Drawing {
         void DrawPath(IPen pen, IPath path);
         void DrawRectangle(IPen pen, int x, int y, int w, int h);
         void DrawLine(IPen pen, int x1, int y1, int x2, int y2);
+
+        void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH, int nSourceX, int nSourceY, int nSourceW, int nSourceH);
     }
 
     public interface IDrawingContext : IDrawingContextCore {
@@ -36,5 +41,9 @@ namespace Azimecha.Drawing {
         void DrawTriangle(IPen pen, float x1, float y1, float x2, float y2, float x3, float y3);
         void DrawPolyline(IPen pen, IEnumerable<PointF> enuPoints);
         void DrawPolygon(IPen pen, IEnumerable<PointF> enuPoints);
+
+        void BlitImage(IBitmap bm);
+        void BlitImage(IBitmap bm, int nDestX, int nDestY);
+        void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH);
     }
 }

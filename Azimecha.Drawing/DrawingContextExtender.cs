@@ -9,6 +9,10 @@ namespace Azimecha.Drawing.Internal {
         public DrawingContextExtender(IDrawingContextCore ctx) { _ctx = ctx; }
 
         public bool HighQuality { get => _ctx.HighQuality; set => _ctx.HighQuality = value; }
+
+        public int Width => _ctx.Width;
+        public int Height => _ctx.Height;
+
         public void Dispose() => _ctx.Dispose();
 
         public void DrawArc(IPen pen, float x, float y, float w, float h, float fStartAngle, float fSweepAngle) {
@@ -144,5 +148,17 @@ namespace Azimecha.Drawing.Internal {
             path.AddTriangle(x1, y1, x2, y2, x3, y3);
             FillPath(brFill, path);
         }
+
+        public void BlitImage(IBitmap bm)
+            => BlitImage(bm, 0, 0, Width, Height, 0, 0, bm.Width, bm.Height);
+
+        public void BlitImage(IBitmap bm, int nDestX, int nDestY)
+            => BlitImage(bm, nDestX, nDestY, bm.Width, bm.Height, 0, 0, bm.Width, bm.Height);
+
+        public void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH)
+            => BlitImage(bm, nDestX, nDestY, nDestW, nDestH, 0, 0, bm.Width, bm.Height);
+
+        public void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH, int nSourceX, int nSourceY, int nSourceW, int nSourceH)
+            => _ctx.BlitImage(bm, nDestX, nDestY, nDestW, nDestH, nSourceX, nSourceY, nSourceW, nSourceH);
     }
 }

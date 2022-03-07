@@ -30,6 +30,9 @@ namespace Azimecha.Drawing.AGG {
             }
         }
 
+        public int Width => _bmTarget.Width;
+        public int Height => _bmTarget.Height;
+
         public void Dispose() {
             _hContext.Dispose();
             _bmTarget = null;
@@ -63,6 +66,12 @@ namespace Azimecha.Drawing.AGG {
         public void FillRectangle(IBrush brFill, int x, int y, int w, int h) {
             if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwDrawRectangle>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, x, y, w, h))
                 throw new DrawOperationFailedException($"Error filling rectangle of size W={w} H={h} at location X={x} Y={y} using brush {brFill}");
+        }
+
+        public void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH, int nSourceX, int nSourceY, int nSourceW, int nSourceH) {
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwBlitImage>()(_hContext.Handle, ((Bitmap)bm).Handle.Handle, nSourceX, nSourceY,
+                    nSourceW, nSourceH, nDestX, nDestY, nDestW, nDestH))
+                throw new DrawOperationFailedException($"Error blitting bitmap {bm}");
         }
     }
 

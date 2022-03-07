@@ -17,6 +17,8 @@ namespace TestWinApp {
         private int _nMouseX1, _nMouseX2, _nMouseX3;
         private int _nMouseY1, _nMouseY2, _nMouseY3;
         private int _nMouseValid;
+        private bool _bPainting, _bBlitting;
+        private int _nBlitX, _nBlitY;
 
         public TestForm() {
             InitializeComponent();
@@ -89,7 +91,7 @@ namespace TestWinApp {
         }
 
         private void TestForm_MouseMove(object sender, MouseEventArgs e) {
-            if (((e.Button & MouseButtons.Left) != 0) && Capture && !(_penCur is null) && (_nMouseValid >= 3)) {
+            if (((e.Button & MouseButtons.Left) != 0) && _bPainting && !(_penCur is null) && (_nMouseValid >= 3)) {
                 _ctx.DrawPolyline(_penCur, new Azimecha.Drawing.PointF[] {
                     new Azimecha.Drawing.PointF(_nMouseX1, _nMouseY1),
                     new Azimecha.Drawing.PointF(_nMouseX2, _nMouseY2),
@@ -110,6 +112,25 @@ namespace TestWinApp {
             _nMouseY1 = e.Y;
 
             _nMouseValid++;
+        }
+
+        private void TestForm_MouseUp(object sender, MouseEventArgs e) {
+            if ((e.Button & MouseButtons.Left) != 0)
+                _bPainting = false;
+
+            if (((e.Button & MouseButtons.Right) != 0) && _bBlitting) {
+                int nBlitLeft, nBlitTop, nBlitRight, nBlitBottom;
+
+                nBlitLeft = _nBlitX < e.X ? _nBlitX : e.X;
+                nBlitTop = _nBlitY < e.Y ? _nBlitY : e.Y;
+                nBlitRight = _nBlitX > e.X ? _nBlitX : e.X;
+                nBlitBottom = _nBlitY > e.Y ? _nBlitY : e.Y;
+
+                _ctx.BlitImage(_bmCopy, nBlitLeft, nBlitTop, nBlitRight - nBlitLeft, nBlitBottom - nBlitTop);
+                Invalidate(new System.Drawing.Rectangle(nBlitLeft, nBlitTop, nBlitRight - nBlitLeft, nBlitBottom - nBlitTop));
+
+                _bBlitting = false;
+            }
         }
 
         private void FillHorizBrushBtn_Click(object sender, EventArgs e) {
@@ -169,7 +190,17 @@ namespace TestWinApp {
 
         private void TestForm_MouseDown(object sender, MouseEventArgs e) {
             Capture = true;
-            _nMouseValid = 0;
+
+            if ((e.Button & MouseButtons.Left) != 0) {
+                _nMouseValid = 0;
+                _bPainting = true;
+            }
+
+            if ((e.Button & MouseButtons.Right) != 0) {
+                _nBlitX = e.X;
+                _nBlitY = e.Y;
+                _bBlitting = true;
+            }
         }
 
         private byte[] GetImageData(System.Drawing.Bitmap sbm) {
