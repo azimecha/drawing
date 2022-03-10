@@ -34,7 +34,7 @@ namespace Azimecha.Drawing.AGG.Interop {
         [SmartImport] public delegate bool AwAddPathLine(IntPtr hPath, float x1, float y1, float x2, float y2);
         [SmartImport] public delegate bool AwAddPathTriangle(IntPtr hPath, float x1, float y1, float x2, float y2, float x3, float y3);
         [SmartImport] public delegate bool AwAddPathPolyline(IntPtr hPath, [MarshalAs(UnmanagedType.LPArray)] [In] AwPathPoint[] arrPoints, int nPoints);
-        [SmartImport] public delegate bool AwAddPathPolygon(IntPtr hPath, [MarshalAs(UnmanagedType.LPArray)][In] AwPathPoint[] arrPoints, int nPoints);
+        [SmartImport] public delegate bool AwAddPathPolygon(IntPtr hPath, [MarshalAs(UnmanagedType.LPArray)] [In] AwPathPoint[] arrPoints, int nPoints);
         [SmartImport] public delegate bool AwAddPath(IntPtr hTargetPath, IntPtr hPathToAdd);
         [SmartImport] public delegate bool AwPathMoveTo(IntPtr hPath, float x, float y);
         [SmartImport] public delegate bool AwPathLineTo(IntPtr hPath, float x, float y);
@@ -51,12 +51,21 @@ namespace Azimecha.Drawing.AGG.Interop {
         [SmartImport] public delegate bool AwFillContext(IntPtr hContext, IntPtr hBrush);
         [SmartImport] public delegate bool AwFillPath(IntPtr hContext, IntPtr hBrush, IntPtr hPath);
         [SmartImport] public delegate bool AwFillRectangle(IntPtr hContext, IntPtr hBrush, int x, int y, int w, int h);
+        [SmartImport] public delegate bool AwFillText(IntPtr hContext, IntPtr hBrush, IntPtr hFont, float x, float y, 
+            [MarshalAs(UnmanagedType.LPArray)][In] byte[] arrTextUTF8ZT);
         [SmartImport] public delegate bool AwDrawPath(IntPtr hContext, IntPtr hPen, IntPtr hPath);
         [SmartImport] public delegate bool AwDrawRectangle(IntPtr hContext, IntPtr hPen, int x, int y, int w, int h);
         [SmartImport] public delegate bool AwDrawLine(IntPtr hContext, IntPtr hPen, int x1, int y1, int x2, int y2);
         [SmartImport] public delegate bool AwBlitImage(IntPtr hDestContext, IntPtr hSrcBitmap, int nSourceX, int nSourceY, int nSourceW, int nSourceH,
             int nDestX, int nDestY, int nDestW, int nDestH);
         [SmartImport] public delegate void AwDeleteContext(IntPtr hContext);
+
+        [SmartImport] public delegate IntPtr AwCreateMonochromeBitmapFont(in AwFontInfo infFont, in AwBufferInfo infGlyphBuffer, int nGlyphZeroChar, 
+            int nGlyphCount, int nGlyphDefault);
+        [SmartImport] public delegate bool AwGetTextSize(IntPtr hFont, [MarshalAs(UnmanagedType.LPArray)][In] byte[] arrTextUTF8ZT, out float fWidth, 
+            out float fHeight);
+        [SmartImport] public delegate bool AwGetFontInfo(IntPtr hFont, out AwFontInfo infFont);
+        [SmartImport] public delegate void AwDeleteFont(IntPtr hFont);
 
         public static readonly SmartLoader Loader = new SmartLoader(typeof(Functions), AGGWRAP_DLL_NAME);
     }

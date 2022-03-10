@@ -61,6 +61,7 @@
     <Compile Include="IBitmapDataAccessor.cs" />
     <Compile Include="IBrush.cs" />
     <Compile Include="IDrawingContext.cs" />
+    <Compile Include="IFont.cs" />
     <Compile Include="IPath.cs" />
     <Compile Include="IPen.cs" />
     <Compile Include="NumericHelper.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="ScaleMode.cs" />
     <Compile Include="SmartLoader.cs" />
     <Compile Include="SystemInfo.cs" />
+    <Compile Include="TextTokenizer.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

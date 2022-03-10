@@ -50,6 +50,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -106,6 +107,7 @@
     <None Include="Resources\nft32.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\seabios8x14.bin" />
     <None Include="Resources\smug trollface cutout.png" />
   </ItemGroup>
   <ItemGroup>

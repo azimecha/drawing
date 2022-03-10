@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace TestWinApp {
         private Azimecha.Drawing.IBrush _brCur, _brRed, _brPattern, _brStretch, _brFillH, _brFitH, _brFillV, _brFitV;
         private Azimecha.Drawing.IDrawingContext _ctx;
         private Azimecha.Drawing.IPen _penCur;
+        private Azimecha.Drawing.IFont _font;
         private int _nMouseX1, _nMouseX2, _nMouseX3;
         private int _nMouseY1, _nMouseY2, _nMouseY3;
         private int _nMouseValid;
@@ -63,6 +65,9 @@ namespace TestWinApp {
                 _brFitV = new Azimecha.Drawing.AGG.ScaledBrush(bmVert2, Azimecha.Drawing.ScaleMode.Fit);
 
             _ctx = _bmCopy.CreateContext();
+
+            BitArray arrFontBits = new BitArray(Properties.Resources.seabios8x14);
+            _font = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits);
         }
 
         [DllImport("gdi32")]
@@ -185,6 +190,14 @@ namespace TestWinApp {
             if (((e.Button & MouseButtons.Left) != 0) && !(_brCur is null)) {
                 _ctx.FillCircle(_brCur, e.X, e.Y, 50.0f);
                 Invalidate();
+            }
+
+            if (((e.Button & MouseButtons.Middle) != 0) && !(_brCur is null)) {
+                string str = Microsoft.VisualBasic.Interaction.InputBox("Enter text", "Font rendering", "Sample Text");
+                if (!(str is null)) {
+                    _ctx.FillText(_brCur, _font, str, e.X, e.Y);
+                    Invalidate();
+                }
             }
         }
 

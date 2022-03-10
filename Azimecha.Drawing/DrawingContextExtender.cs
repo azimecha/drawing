@@ -160,5 +160,71 @@ namespace Azimecha.Drawing.Internal {
 
         public void BlitImage(IBitmap bm, int nDestX, int nDestY, int nDestW, int nDestH, int nSourceX, int nSourceY, int nSourceW, int nSourceH)
             => _ctx.BlitImage(bm, nDestX, nDestY, nDestW, nDestH, nSourceX, nSourceY, nSourceW, nSourceH);
+
+        public void FillText(IBrush brFill, IFont font, string strText, float x, float y, Alignment alignHoriz, Alignment alignVert) {
+            PointF ptSize = font.GetTextSize(strText);
+
+            switch (alignHoriz) {
+                case Alignment.Center:
+                    x -= ptSize.X / 2;
+                    break;
+
+                case Alignment.Far:
+                    x -= ptSize.X;
+                    break;
+            }
+
+            switch (alignVert) {
+                case Alignment.Center:
+                    y -= ptSize.Y / 2;
+                    break;
+
+                case Alignment.Far:
+                    y -= ptSize.Y;
+                    break;
+            }
+
+            FillText(brFill, font, strText, x, y);
+        }
+
+        public void FillText(IBrush brFill, IFont font, string strText, float x, float y, float w, float h, Alignment alignHoriz = Alignment.Near, 
+            Alignment alignVert = Alignment.Near, TextWrapping wrap = TextWrapping.WordWrap) 
+        {
+            TextTokenizer.Token[] arrTokens = TextTokenizer.Tokenize(strText, wrap != TextWrapping.CharWrap);
+
+            TextTokenizer.Token[][] arrLines;
+            if (wrap == TextWrapping.None)
+                arrLines = TextTokenizer.ToLines(arrTokens);
+            else
+                arrLines = TextTokenizer.ToWrappedLines(arrTokens, s => font.GetTextSize(s).X, w, wrap == TextWrapping.WordWrap);
+
+            string strWrapped = TextTokenizer.LinesToString(arrLines, "\n");
+            PointF ptSize = font.GetTextSize(strWrapped);
+
+            switch (alignHoriz) {
+                case Alignment.Center:
+                    x += w / 2 - ptSize.X / 2;
+                    break;
+
+                case Alignment.Far:
+                    x += w - ptSize.X;
+                    break;
+            }
+
+            switch (alignVert) {
+                case Alignment.Center:
+                    y += h / 2 - ptSize.Y / 2;
+                    break;
+
+                case Alignment.Far:
+                    y += h - ptSize.Y;
+                    break;
+            }
+
+            FillText(brFill, font, strWrapped, x, y);
+        }
+
+        public void FillText(IBrush brFill, IFont font, string strText, float x, float y)
+            => _ctx.FillText(brFill, font, strText, x, y);
     }
 }

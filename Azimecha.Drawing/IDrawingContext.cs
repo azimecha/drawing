@@ -12,6 +12,7 @@ namespace Azimecha.Drawing {
         void Fill(IBrush brFill);
         void FillPath(IBrush brFill, IPath path);
         void FillRectangle(IBrush brFill, int x, int y, int w, int h);
+        void FillText(IBrush brFill, IFont font, string strText, float x, float y); // top left
 
         void DrawPath(IPen pen, IPath path);
         void DrawRectangle(IPen pen, int x, int y, int w, int h);
@@ -29,6 +30,9 @@ namespace Azimecha.Drawing {
         void FillPieSlice(IBrush brFill, float x, float y, float w, float h, float fStartAngle, float fSweepAngle);
         void FillTriangle(IBrush brFill, float x1, float y1, float x2, float y2, float x3, float y3);
         void FillPolygon(IBrush brFill, IEnumerable<PointF> enuPoints);
+        void FillText(IBrush brFill, IFont font, string strText, float x, float y, Alignment alignHoriz, Alignment alignVert);
+        void FillText(IBrush brFill, IFont font, string strText, float x, float y, float w, float h, Alignment alignHoriz = Alignment.Near, 
+            Alignment alignVert = Alignment.Near, TextWrapping wrap = TextWrapping.WordWrap);
 
         void DrawRectangle(IPen pen, float x, float y, float w, float h);
         void DrawRoundedRectangle(IPen pen, float x, float y, float w, float h, float fRadius);

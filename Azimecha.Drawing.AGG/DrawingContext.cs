@@ -73,6 +73,12 @@ namespace Azimecha.Drawing.AGG {
                     nSourceW, nSourceH, nDestX, nDestY, nDestW, nDestH))
                 throw new DrawOperationFailedException($"Error blitting bitmap {bm}");
         }
+
+        public void FillText(IBrush brFill, IFont font, string strText, float x, float y) {
+            if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwFillText>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, 
+                    ((Font)font).Handle.Handle, x, y, Font.StringToBytes(strText)))
+                throw new DrawOperationFailedException($"Error filling text \"{strText}\" at X={x} Y={y} with brush {brFill} and font {font}");
+        }
     }
 
     internal class SafeContextHandle : Internal.SafeHandle {

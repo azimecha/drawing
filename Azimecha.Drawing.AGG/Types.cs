@@ -51,4 +51,18 @@ namespace Azimecha.Drawing.AGG.Interop {
     internal enum AwQuality {
         Good, Fast
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct AwFontInfo {
+        public short nHeight;
+        public float fAscent;
+        public float fInternalLeading;
+        public float fExternalLeading;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct AwFontGlyphInfo {
+        public short nWidthPixels;
+        public IntPtr pData;
+    }
 }
