@@ -30,7 +30,9 @@ namespace Azimecha.Drawing.AGG {
             }
         }
 
-        public static MonochromeBitmapFont CreateFixedWidth(char cGlyphZero, int nWidth, int nHeight, BitArray arrData, char cDefault = '?') {
+        public static MonochromeBitmapFont CreateFixedWidth(char cGlyphZero, int nWidth, int nHeight, BitArray arrData, char cDefault = '?',
+            bool bReverseBitOrder = false)
+        {
             int nBitsPerGlyph = nWidth * nHeight;
             int nBytesPerGlyph = nBitsPerGlyph / 8 + (((nBitsPerGlyph % 8) != 0) ? 1 : 0);
             int nGlyphs = arrData.Length / nBitsPerGlyph;
@@ -54,12 +56,27 @@ namespace Azimecha.Drawing.AGG {
                 arrGlyphs[nGlyph] = glyph;
             }
 
-            return CreateVariableWidth(cGlyphZero, nHeight, arrGlyphs, cDefault);
+            return CreateVariableWidth(cGlyphZero, nHeight, arrGlyphs, cDefault, bReverseBitOrder);
         }
 
-        public static MonochromeBitmapFont CreateVariableWidth(char cGlyphZero, int nHeight, IEnumerable<FontBitmapGlyph> enuGlyphs, char cDefault = '?') {
+        public static MonochromeBitmapFont CreateVariableWidth(char cGlyphZero, int nHeight, IEnumerable<FontBitmapGlyph> enuGlyphs, char cDefault = '?',
+            bool bReverseBitOrder = false) 
+        {
+            if (bReverseBitOrder)
+                enuGlyphs = new Internal.Transformer<FontBitmapGlyph, FontBitmapGlyph>(enuGlyphs, ReverseBitOrder);
+
             GlyphBitmapBuffer bufGlyphs = new GlyphBitmapBuffer(enuGlyphs);
             return new MonochromeBitmapFont(nHeight, cGlyphZero, cDefault, bufGlyphs);
+        }
+
+        private static FontBitmapGlyph ReverseBitOrder(FontBitmapGlyph glyph) {
+            byte[] arrNewData = new byte[glyph.Data.Length];
+
+            for (int nByte = 0; nByte < glyph.Data.Length; nByte++)
+                arrNewData[nByte] = Internal.Utils.ReverseBits(glyph.Data[nByte]);
+
+            glyph.Data = arrNewData;
+            return glyph;
         }
 
         private static readonly Interop.AwDataDestructor _procGlyphBufferDtor = GlyphBufferDestructor;

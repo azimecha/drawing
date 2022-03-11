@@ -67,7 +67,7 @@ namespace TestWinApp {
             _ctx = _bmCopy.CreateContext();
 
             BitArray arrFontBits = new BitArray(Properties.Resources.seabios8x14);
-            _font = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits);
+            _font = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
         }
 
         [DllImport("gdi32")]
