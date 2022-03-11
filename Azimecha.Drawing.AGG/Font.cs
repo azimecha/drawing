@@ -17,7 +17,7 @@ namespace Azimecha.Drawing.AGG {
         public float Height => FontInfo.nHeight;
 
         public PointF GetTextSize(string strText) {
-            byte[] arrData = StringToBytes(strText);
+            byte[] arrData = StringToBytes(Internal.Utils.ConvertLFToCRLF(strText));
 
             PointF ptSize;
             if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwGetTextSize>()(_hFont.Handle, arrData, out ptSize.X, out ptSize.Y))

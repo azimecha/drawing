@@ -119,6 +119,11 @@ namespace TestWinApp {
             _nMouseValid++;
         }
 
+        private void SaveBtn_Click(object sender, EventArgs e) {
+            if (SaveImageDlg.ShowDialog() == DialogResult.OK)
+                System.IO.File.WriteAllBytes(SaveImageDlg.FileName, _bmCopy.ReadData());
+        }
+
         private void TestForm_MouseUp(object sender, MouseEventArgs e) {
             if ((e.Button & MouseButtons.Left) != 0)
                 _bPainting = false;
@@ -195,7 +200,8 @@ namespace TestWinApp {
             if (((e.Button & MouseButtons.Middle) != 0) && !(_brCur is null)) {
                 string str = Microsoft.VisualBasic.Interaction.InputBox("Enter text", "Font rendering", "Sample Text");
                 if (!(str is null)) {
-                    _ctx.FillText(_brCur, _font, str, e.X, e.Y);
+                    _ctx.FillText(_brCur, _font, str, e.X - 50, e.Y - 50, 100, 100, Azimecha.Drawing.Alignment.Center, 
+                        Azimecha.Drawing.Alignment.Center, Azimecha.Drawing.TextWrapping.WordWrap);
                     Invalidate();
                 }
             }

@@ -81,10 +81,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="aggwrap.dll">
+    <Content Include="aggwrap32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="aggwrap.pdb">
+    <Content Include="aggwrap64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

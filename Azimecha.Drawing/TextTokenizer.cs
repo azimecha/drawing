@@ -25,7 +25,7 @@ namespace Azimecha.Drawing.Internal {
 
             // merge tokens
             if (bMergeTokens) {
-                for (int nToken = lstTokens.Count; nToken > 0; nToken--) {
+                for (int nToken = lstTokens.Count - 1; nToken > 0; nToken--) {
                     Token tokCur = lstTokens[nToken];
                     if ((tokCur.Type & TokenType.LineBreak) != 0)
                         continue;
@@ -91,6 +91,8 @@ namespace Azimecha.Drawing.Internal {
 
                     lstLines.Add(lstCurLine.ToArray());
                     lstCurLine = new List<Token>();
+
+                    fCurLineWidth = 0.0f;
                 }
 
                 if ((tok.Type & TokenType.LineBreak) == 0) {

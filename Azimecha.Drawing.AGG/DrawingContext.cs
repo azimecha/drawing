@@ -76,7 +76,7 @@ namespace Azimecha.Drawing.AGG {
 
         public void FillText(IBrush brFill, IFont font, string strText, float x, float y) {
             if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwFillText>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, 
-                    ((Font)font).Handle.Handle, x, y, Font.StringToBytes(strText)))
+                    ((Font)font).Handle.Handle, x, y, Font.StringToBytes(Internal.Utils.ConvertLFToCRLF(strText))))
                 throw new DrawOperationFailedException($"Error filling text \"{strText}\" at X={x} Y={y} with brush {brFill} and font {font}");
         }
     }

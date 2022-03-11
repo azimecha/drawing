@@ -56,6 +56,19 @@ namespace Azimecha.Drawing.Internal {
             0x0f, 0x8f, 0x4f, 0xcf, 0x2f, 0xaf, 0x6f, 0xef,
             0x1f, 0x9f, 0x5f, 0xdf, 0x3f, 0xbf, 0x7f, 0xff
         };
+
+        public static string ConvertLFToCRLF(string strLF) {
+            string strCRLF = string.Empty;
+
+            for (int nChar = 0; nChar < strLF.Length; nChar++) {
+                if ((strLF[nChar] == '\n') && ((nChar == 0) || (strLF[nChar - 1] != '\r')))
+                    strCRLF += "\r\n";
+                else
+                    strCRLF += strLF[nChar];
+            }
+
+            return strCRLF;
+        }
     }
 
     public class Transformer<TI, TO> : IEnumerable<TO> {
