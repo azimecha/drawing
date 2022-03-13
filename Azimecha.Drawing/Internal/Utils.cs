@@ -91,7 +91,7 @@ namespace Azimecha.Drawing.Internal {
                 if (IntPtr.Size >= 8)
                     return ulong.MaxValue;
 
-                return (1UL << IntPtr.Size) - 1;
+                return (1UL << (IntPtr.Size * 8)) - 1;
             }
         }
 

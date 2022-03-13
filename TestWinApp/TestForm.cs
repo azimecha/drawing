@@ -69,7 +69,10 @@ namespace TestWinApp {
             BitArray arrFontBits = new BitArray(Properties.Resources.seabios8x14);
             _fontBitmap = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
 
-            Azimecha.Drawing.IFontSet fontset = new Azimecha.Drawing.AGG.TrueTypeFontFile(Properties.Resources.trim);
+            string strTempTTF = System.IO.Path.GetTempFileName();
+            System.IO.File.WriteAllBytes(strTempTTF, Properties.Resources.trim);
+
+            Azimecha.Drawing.IFontSet fontset = new Azimecha.Drawing.AGG.TrueTypeFontFile(strTempTTF);
             _fontTTF = fontset[0].CreateFont(24);
         }
 
