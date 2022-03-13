@@ -67,6 +67,12 @@ namespace Azimecha.Drawing.AGG.Interop {
         [SmartImport] public delegate bool AwGetFontInfo(IntPtr hFont, out AwFontInfo infFont);
         [SmartImport] public delegate void AwDeleteFont(IntPtr hFont);
 
+        [SmartImport] public delegate IntPtr AwCreateFontSetOnTTF(in AwBufferInfo bufData);
+        [SmartImport] public delegate int AwGetFontSetSize(IntPtr hFontSet);
+        [SmartImport] public delegate IntPtr AwGetFontNameFromSet(IntPtr hFontSet, int nFont);
+        [SmartImport] public delegate IntPtr AwCreateFontFromSet(IntPtr hFontSet, int nFont, int nHeightPixels);
+        [SmartImport] public delegate void AwDeleteFontSet(IntPtr hFontSet);
+
         public static readonly SmartLoader Loader = new SmartLoader(typeof(Functions), AGGWRAP_DLL_NAME);
     }
 }

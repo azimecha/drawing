@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +41,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -47,6 +51,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,26 +59,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDataBuffer.cs" />
+    <Compile Include="Internal\ArrayLikeEnumerator.cs" />
     <Compile Include="Color.cs" />
-    <Compile Include="DrawingContextExtender.cs" />
+    <Compile Include="Internal\HGlobalDataBuffer.cs" />
+    <Compile Include="Internal\MemoryMapping.cs" />
+    <Compile Include="Internal\PinnedArrayDataBuffer.cs" />
+    <Compile Include="Internal\DrawingContextExtender.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="IArrayLike.cs" />
     <Compile Include="IBitmap.cs" />
     <Compile Include="IBitmapDataAccessor.cs" />
     <Compile Include="IBrush.cs" />
     <Compile Include="IDrawingContext.cs" />
     <Compile Include="IFont.cs" />
+    <Compile Include="IFontSet.cs" />
     <Compile Include="IPath.cs" />
     <Compile Include="IPen.cs" />
-    <Compile Include="NumericHelper.cs" />
+    <Compile Include="Internal\NumericHelper.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
-    <Compile Include="SafeHandle.cs" />
+    <Compile Include="Internal\SafeHandle.cs" />
     <Compile Include="ScaleMode.cs" />
-    <Compile Include="SmartLoader.cs" />
-    <Compile Include="SystemInfo.cs" />
-    <Compile Include="TextTokenizer.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Internal\SmartLoader.cs" />
+    <Compile Include="Internal\SystemInfo.cs" />
+    <Compile Include="Internal\TextTokenizer.cs" />
+    <Compile Include="Internal\Utils.cs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DefineConstants Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.0'))))   &gt;= 0">$(DefineConstants);NETFX_40</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.0'))))   &gt;= 0">
+    <Reference Include="System.IO.MemoryMappedFiles" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -35,23 +35,11 @@ namespace Azimecha.Drawing.AGG {
 
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 
-            GCHandle? gchBufferObject = GCHandle.Alloc(buf);
-            try {
-                Interop.AwBufferInfo infBuffer = new Interop.AwBufferInfo() {
-                    nDataSize = (ulong)buf.DataSize,
-                    pData = buf.DataPointer,
-                    procDestructor = bDisposeBuffer ? _procDisposeDtor : _procNoDisposeDtor,
-                    tag = GCHandle.ToIntPtr(gchBufferObject.Value)
-                };
-
+            BufferUtils.TryPassOwnership(buf, bDisposeBuffer, infBuffer => {
                 hBitmap.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwCreateBitmapOnBuffer>()(w, h, ref infBuffer), true);
                 if (!hBitmap.IsHandleValid)
                     throw new ObjectCreationFailedException($"Error creating {w}x{h} bitmap");
-
-                gchBufferObject = null;
-            } finally {
-                gchBufferObject?.Free();
-            }
+            });
 
             _hBitmap = hBitmap;
             _nWidth = w;
@@ -69,14 +57,14 @@ namespace Azimecha.Drawing.AGG {
             int nExpectedLength = w * h * 4;
             if (arrData.Length != nExpectedLength)
                 throw new ArgumentException($"Incorrect data size for {w}x{h} bitmap: expected {nExpectedLength} bytes, got {arrData.Length}");
-            return new Bitmap(w, h, new PinnedArrayDataBuffer<byte>(arrData));
+            return new Bitmap(w, h, new Internal.PinnedArrayDataBuffer<byte>(arrData));
         }
 
         public static Bitmap CreateOnArray(int w, int h, uint[] arrData) {
             int nExpectedLength = w * h;
             if (arrData.Length != nExpectedLength)
                 throw new ArgumentException($"Incorrect data size for {w}x{h} bitmap: expected {nExpectedLength} pixels, got {arrData.Length}");
-            return new Bitmap(w, h, new PinnedArrayDataBuffer<uint>(arrData));
+            return new Bitmap(w, h, new Internal.PinnedArrayDataBuffer<uint>(arrData));
         }
 
         public Bitmap Duplicate() {
@@ -93,20 +81,6 @@ namespace Azimecha.Drawing.AGG {
 
         public void Dispose() {
             _hBitmap.Dispose();
-        }
-
-        private static readonly Interop.AwDataDestructor _procDisposeDtor = DataDisposeDtorProc;
-        private static readonly Interop.AwDataDestructor _procNoDisposeDtor = DataNoDisposeDtorProc;
-
-        private static void DataDisposeDtorProc(IntPtr pDataIgnored, IntPtr hGCHandle) {
-            GCHandle gchBufferObject = GCHandle.FromIntPtr(hGCHandle);
-            (gchBufferObject.Target as IDisposable)?.Dispose();
-            gchBufferObject.Free();
-        }
-
-        private static void DataNoDisposeDtorProc(IntPtr pDataIgnored, IntPtr hGCHandle) {
-            GCHandle gchBufferObject = GCHandle.FromIntPtr(hGCHandle);
-            gchBufferObject.Free();
         }
 
         public override string ToString() => _hBitmap.ToString();

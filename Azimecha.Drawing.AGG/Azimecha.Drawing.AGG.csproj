@@ -59,8 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bitmap.cs" />
-    <Compile Include="DataBuffer.cs" />
     <Compile Include="Brush.cs" />
+    <Compile Include="BufferUtils.cs" />
     <Compile Include="DrawingContext.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Functions.cs" />
@@ -71,6 +71,8 @@
     <Compile Include="Pen.cs" />
     <Compile Include="ScaledBrush.cs" />
     <Compile Include="SolidBrush.cs" />
+    <Compile Include="FontSet.cs" />
+    <Compile Include="TrueTypeFontFile.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

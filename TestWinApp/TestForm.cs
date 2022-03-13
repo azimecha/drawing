@@ -15,7 +15,7 @@ namespace TestWinApp {
         private Azimecha.Drawing.IBrush _brCur, _brRed, _brPattern, _brStretch, _brFillH, _brFitH, _brFillV, _brFitV;
         private Azimecha.Drawing.IDrawingContext _ctx;
         private Azimecha.Drawing.IPen _penCur;
-        private Azimecha.Drawing.IFont _font;
+        private Azimecha.Drawing.IFont _fontCur, _fontBitmap, _fontTTF;
         private int _nMouseX1, _nMouseX2, _nMouseX3;
         private int _nMouseY1, _nMouseY2, _nMouseY3;
         private int _nMouseValid;
@@ -67,7 +67,10 @@ namespace TestWinApp {
             _ctx = _bmCopy.CreateContext();
 
             BitArray arrFontBits = new BitArray(Properties.Resources.seabios8x14);
-            _font = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
+            _fontBitmap = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
+
+            Azimecha.Drawing.IFontSet fontset = new Azimecha.Drawing.AGG.TrueTypeFontFile(Properties.Resources.trim);
+            _fontTTF = fontset[0].CreateFont(24);
         }
 
         [DllImport("gdi32")]
@@ -93,6 +96,14 @@ namespace TestWinApp {
 
             gfx.ExcludeClip(rectImage);
             base.OnPaintBackground(new PaintEventArgs(gfx, e.ClipRectangle));
+        }
+
+        private void BitmapFontBtn_Click(object sender, EventArgs e) {
+            _fontCur = _fontBitmap;
+        }
+
+        private void TruetypeFontBtn_Click(object sender, EventArgs e) {
+            _fontCur = _fontTTF;
         }
 
         private void TestForm_MouseMove(object sender, MouseEventArgs e) {
@@ -197,10 +208,10 @@ namespace TestWinApp {
                 Invalidate();
             }
 
-            if (((e.Button & MouseButtons.Middle) != 0) && !(_brCur is null)) {
+            if (((e.Button & MouseButtons.Middle) != 0) && !(_brCur is null) && !(_fontCur is null)) {
                 string str = Microsoft.VisualBasic.Interaction.InputBox("Enter text", "Font rendering", "Sample Text");
                 if (!(str is null)) {
-                    _ctx.FillText(_brCur, _font, str, e.X - 50, e.Y - 50, 100, 100, Azimecha.Drawing.Alignment.Center, 
+                    _ctx.FillText(_brCur, _fontCur, str, e.X - 50, e.Y - 50, 100, 100, Azimecha.Drawing.Alignment.Center, 
                         Azimecha.Drawing.Alignment.Center, Azimecha.Drawing.TextWrapping.WordWrap);
                     Invalidate();
                 }

@@ -69,6 +69,54 @@ namespace Azimecha.Drawing.Internal {
 
             return strCRLF;
         }
+
+        public static unsafe byte[] PtrToNarrowChars(IntPtr pData) {
+            byte* pszData = (byte*)pData;
+
+            int nLength = 0;
+            while (pszData[nLength] != 0)
+                nLength++;
+
+            byte[] arrData = new byte[nLength];
+            for (int i = 0; i < nLength; i++)
+                arrData[i] = pszData[i];
+
+            return arrData;
+        }
+
+        public static string PtrToStringUTF8(IntPtr pData) => Encoding.UTF8.GetString(PtrToNarrowChars(pData));
+
+        public static ulong IntPtrMaxValue {
+            get {
+                if (IntPtr.Size >= 8)
+                    return ulong.MaxValue;
+
+                return (1UL << IntPtr.Size) - 1;
+            }
+        }
+
+        private const int READ_BLOCK_SIZE = 4096;
+
+        public static long ReadStreamToPointer(System.IO.Stream stmRead, IntPtr pBuffer, long nMaxBytes) {
+            byte[] arrTemp = new byte[READ_BLOCK_SIZE];
+            long nTotalBytesRead = 0;
+
+            while (nTotalBytesRead < nMaxBytes) {
+                long nBytesLeft = nTotalBytesRead - nMaxBytes;
+
+                int nToRead = READ_BLOCK_SIZE;
+                if (nToRead > nBytesLeft)
+                    nToRead = (int)nBytesLeft;
+
+                int nNewBytesRead = stmRead.Read(arrTemp, 0, nToRead);
+                if (nNewBytesRead <= 0)
+                    break;
+
+                nTotalBytesRead += nNewBytesRead;
+            }
+
+            return nTotalBytesRead;
+        }
     }
 
     public class Transformer<TI, TO> : IEnumerable<TO> {

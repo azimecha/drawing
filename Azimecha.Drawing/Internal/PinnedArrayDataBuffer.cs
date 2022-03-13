@@ -4,13 +4,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-namespace Azimecha.Drawing.AGG {
-    public interface IDataBuffer : IDisposable {
-        IntPtr DataPointer { get; }
-        long DataSize { get; }
-    }
-
-    internal class PinnedArrayDataBuffer<T> : IDataBuffer {
+namespace Azimecha.Drawing.Internal {
+    public class PinnedArrayDataBuffer<T> : IDataBuffer {
         private SafePinnedGCHandle _hObject;
         private T[] _arrData;
 
@@ -28,7 +23,7 @@ namespace Azimecha.Drawing.AGG {
         }
     }
 
-    internal class SafePinnedGCHandle : Internal.SafeHandle {
+    public class SafePinnedGCHandle : SafeHandle {
         public SafePinnedGCHandle(object obj) : base(GCHandle.ToIntPtr(GCHandle.Alloc(obj, GCHandleType.Pinned)), true) { }
         public SafePinnedGCHandle(IntPtr hObject, bool bOwnObject) : base(hObject, bOwnObject) { }
 

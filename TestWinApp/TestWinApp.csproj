@@ -111,6 +111,7 @@
     <None Include="Resources\smug trollface cutout.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\trim.ttf" />
     <None Include="Resources\we are not the same.jpg" />
   </ItemGroup>
   <ItemGroup>

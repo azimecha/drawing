@@ -33,12 +33,14 @@
             this.FitHorizBrushBtn = new System.Windows.Forms.Button();
             this.SaveBtn = new System.Windows.Forms.Button();
             this.SaveImageDlg = new System.Windows.Forms.SaveFileDialog();
+            this.BitmapFontBtn = new System.Windows.Forms.Button();
+            this.TruetypeFontBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // RedBrushBtn
             // 
             this.RedBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.RedBrushBtn.Location = new System.Drawing.Point(713, 357);
+            this.RedBrushBtn.Location = new System.Drawing.Point(713, 415);
             this.RedBrushBtn.Name = "RedBrushBtn";
             this.RedBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.RedBrushBtn.TabIndex = 0;
@@ -49,7 +51,7 @@
             // ClearBtn
             // 
             this.ClearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearBtn.Location = new System.Drawing.Point(713, 386);
+            this.ClearBtn.Location = new System.Drawing.Point(632, 386);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(75, 23);
             this.ClearBtn.TabIndex = 1;
@@ -60,7 +62,7 @@
             // PatBrushBtn
             // 
             this.PatBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.PatBrushBtn.Location = new System.Drawing.Point(713, 328);
+            this.PatBrushBtn.Location = new System.Drawing.Point(713, 386);
             this.PatBrushBtn.Name = "PatBrushBtn";
             this.PatBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.PatBrushBtn.TabIndex = 2;
@@ -71,7 +73,7 @@
             // StretchBrushBtn
             // 
             this.StretchBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.StretchBrushBtn.Location = new System.Drawing.Point(713, 299);
+            this.StretchBrushBtn.Location = new System.Drawing.Point(713, 357);
             this.StretchBrushBtn.Name = "StretchBrushBtn";
             this.StretchBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.StretchBrushBtn.TabIndex = 3;
@@ -82,7 +84,7 @@
             // FitVertBrushBtn
             // 
             this.FitVertBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.FitVertBrushBtn.Location = new System.Drawing.Point(713, 270);
+            this.FitVertBrushBtn.Location = new System.Drawing.Point(713, 328);
             this.FitVertBrushBtn.Name = "FitVertBrushBtn";
             this.FitVertBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.FitVertBrushBtn.TabIndex = 4;
@@ -93,7 +95,7 @@
             // FillVertBrushBtn
             // 
             this.FillVertBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.FillVertBrushBtn.Location = new System.Drawing.Point(713, 241);
+            this.FillVertBrushBtn.Location = new System.Drawing.Point(713, 299);
             this.FillVertBrushBtn.Name = "FillVertBrushBtn";
             this.FillVertBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.FillVertBrushBtn.TabIndex = 5;
@@ -104,7 +106,7 @@
             // FillHorizBrushBtn
             // 
             this.FillHorizBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.FillHorizBrushBtn.Location = new System.Drawing.Point(713, 183);
+            this.FillHorizBrushBtn.Location = new System.Drawing.Point(713, 241);
             this.FillHorizBrushBtn.Name = "FillHorizBrushBtn";
             this.FillHorizBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.FillHorizBrushBtn.TabIndex = 7;
@@ -115,7 +117,7 @@
             // FitHorizBrushBtn
             // 
             this.FitHorizBrushBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.FitHorizBrushBtn.Location = new System.Drawing.Point(713, 212);
+            this.FitHorizBrushBtn.Location = new System.Drawing.Point(713, 270);
             this.FitHorizBrushBtn.Name = "FitHorizBrushBtn";
             this.FitHorizBrushBtn.Size = new System.Drawing.Size(75, 23);
             this.FitHorizBrushBtn.TabIndex = 6;
@@ -126,7 +128,7 @@
             // SaveBtn
             // 
             this.SaveBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveBtn.Location = new System.Drawing.Point(713, 415);
+            this.SaveBtn.Location = new System.Drawing.Point(632, 415);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(75, 23);
             this.SaveBtn.TabIndex = 8;
@@ -139,12 +141,36 @@
             this.SaveImageDlg.Filter = "Raw data|*.raw";
             this.SaveImageDlg.Title = "Save image";
             // 
+            // BitmapFontBtn
+            // 
+            this.BitmapFontBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BitmapFontBtn.Location = new System.Drawing.Point(632, 357);
+            this.BitmapFontBtn.Name = "BitmapFontBtn";
+            this.BitmapFontBtn.Size = new System.Drawing.Size(75, 23);
+            this.BitmapFontBtn.TabIndex = 9;
+            this.BitmapFontBtn.Text = "Bitmap Font";
+            this.BitmapFontBtn.UseVisualStyleBackColor = true;
+            this.BitmapFontBtn.Click += new System.EventHandler(this.BitmapFontBtn_Click);
+            // 
+            // TruetypeFontBtn
+            // 
+            this.TruetypeFontBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.TruetypeFontBtn.Location = new System.Drawing.Point(632, 328);
+            this.TruetypeFontBtn.Name = "TruetypeFontBtn";
+            this.TruetypeFontBtn.Size = new System.Drawing.Size(75, 23);
+            this.TruetypeFontBtn.TabIndex = 10;
+            this.TruetypeFontBtn.Text = "TrueType";
+            this.TruetypeFontBtn.UseVisualStyleBackColor = true;
+            this.TruetypeFontBtn.Click += new System.EventHandler(this.TruetypeFontBtn_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.TruetypeFontBtn);
+            this.Controls.Add(this.BitmapFontBtn);
             this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.FillHorizBrushBtn);
             this.Controls.Add(this.FitHorizBrushBtn);
@@ -178,6 +204,8 @@
         private System.Windows.Forms.Button FitHorizBrushBtn;
         private System.Windows.Forms.Button SaveBtn;
         private System.Windows.Forms.SaveFileDialog SaveImageDlg;
+        private System.Windows.Forms.Button BitmapFontBtn;
+        private System.Windows.Forms.Button TruetypeFontBtn;
     }
 }
 

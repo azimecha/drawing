@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Drawing.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -93,8 +94,8 @@ namespace Azimecha.Drawing.AGG {
     }
 
     internal class GlyphBitmapBuffer : IDataBuffer {
-        private UnmanagedDataBuffer<Interop.AwFontGlyphInfo> _bufInfo;
-        private UnmanagedDataBuffer<byte> _bufData;
+        private HGlobalDataBuffer<Interop.AwFontGlyphInfo> _bufInfo;
+        private HGlobalDataBuffer<byte> _bufData;
 
         public GlyphBitmapBuffer(IEnumerable<FontBitmapGlyph> enuGlyphs) {
             int nCount = 0, nTotalDataSize = 0;
@@ -103,8 +104,8 @@ namespace Azimecha.Drawing.AGG {
                 nTotalDataSize += glyph.Data.Length;
             }
 
-            _bufInfo = new UnmanagedDataBuffer<Interop.AwFontGlyphInfo>(nCount);
-            _bufData = new UnmanagedDataBuffer<byte>(nTotalDataSize);
+            _bufInfo = new HGlobalDataBuffer<Interop.AwFontGlyphInfo>(nCount);
+            _bufData = new HGlobalDataBuffer<byte>(nTotalDataSize);
 
             int nGlyph = 0, nDataOffset = 0;
             foreach (FontBitmapGlyph glyph in enuGlyphs) {
@@ -128,43 +129,6 @@ namespace Azimecha.Drawing.AGG {
         public void Dispose() {
             _bufInfo?.Dispose();
             _bufData?.Dispose();
-        }
-    }
-
-    internal class UnmanagedDataBuffer<T> : IDataBuffer where T : unmanaged {
-        private SafeGlobalHandle _hData = new SafeGlobalHandle();
-        private int _nCount = 0;
-
-        public unsafe UnmanagedDataBuffer(int nObjectCount) {
-            _hData.TakeObject(Marshal.AllocHGlobal(nObjectCount * sizeof(T)), true);
-            _nCount = nObjectCount;
-        }
-
-        public IntPtr DataPointer => _hData.Handle;
-        public unsafe long DataSize => _nCount * sizeof(T);
-
-        public unsafe T this[int nIndex] {
-            get {
-                if (nIndex > _nCount)
-                    throw new IndexOutOfRangeException();
-                return ((T*)DataPointer)[nIndex];
-            }
-
-            set {
-                if (nIndex > _nCount)
-                    throw new IndexOutOfRangeException();
-                ((T*)DataPointer)[nIndex] = value;
-            }
-        }
-
-        public void Dispose() {
-            _hData?.Dispose();
-        }
-    }
-
-    internal class SafeGlobalHandle : Internal.SafeHandle {
-        protected override void CloseObjectHandle(IntPtr hObject) {
-            Marshal.FreeHGlobal(hObject);
         }
     }
 }
