@@ -35,6 +35,8 @@
             this.SaveImageDlg = new System.Windows.Forms.SaveFileDialog();
             this.BitmapFontBtn = new System.Windows.Forms.Button();
             this.TruetypeFontBtn = new System.Windows.Forms.Button();
+            this.LoadBtn = new System.Windows.Forms.Button();
+            this.OpenImageDlg = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // RedBrushBtn
@@ -51,7 +53,7 @@
             // ClearBtn
             // 
             this.ClearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearBtn.Location = new System.Drawing.Point(632, 386);
+            this.ClearBtn.Location = new System.Drawing.Point(632, 357);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(75, 23);
             this.ClearBtn.TabIndex = 1;
@@ -144,7 +146,7 @@
             // BitmapFontBtn
             // 
             this.BitmapFontBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BitmapFontBtn.Location = new System.Drawing.Point(632, 357);
+            this.BitmapFontBtn.Location = new System.Drawing.Point(632, 328);
             this.BitmapFontBtn.Name = "BitmapFontBtn";
             this.BitmapFontBtn.Size = new System.Drawing.Size(75, 23);
             this.BitmapFontBtn.TabIndex = 9;
@@ -155,7 +157,7 @@
             // TruetypeFontBtn
             // 
             this.TruetypeFontBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.TruetypeFontBtn.Location = new System.Drawing.Point(632, 328);
+            this.TruetypeFontBtn.Location = new System.Drawing.Point(632, 299);
             this.TruetypeFontBtn.Name = "TruetypeFontBtn";
             this.TruetypeFontBtn.Size = new System.Drawing.Size(75, 23);
             this.TruetypeFontBtn.TabIndex = 10;
@@ -163,12 +165,30 @@
             this.TruetypeFontBtn.UseVisualStyleBackColor = true;
             this.TruetypeFontBtn.Click += new System.EventHandler(this.TruetypeFontBtn_Click);
             // 
+            // LoadBtn
+            // 
+            this.LoadBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LoadBtn.Location = new System.Drawing.Point(632, 386);
+            this.LoadBtn.Name = "LoadBtn";
+            this.LoadBtn.Size = new System.Drawing.Size(75, 23);
+            this.LoadBtn.TabIndex = 11;
+            this.LoadBtn.Text = "Load";
+            this.LoadBtn.UseVisualStyleBackColor = true;
+            this.LoadBtn.Click += new System.EventHandler(this.LoadBtn_Click);
+            // 
+            // OpenImageDlg
+            // 
+            this.OpenImageDlg.Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp;*.psd;*.tga;*.gif;*.hdr;*.pic;*.ppm;*.pgm|Al" +
+    "l files|*.*";
+            this.OpenImageDlg.Title = "Open Image";
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.LoadBtn);
             this.Controls.Add(this.TruetypeFontBtn);
             this.Controls.Add(this.BitmapFontBtn);
             this.Controls.Add(this.SaveBtn);
@@ -206,6 +226,8 @@
         private System.Windows.Forms.SaveFileDialog SaveImageDlg;
         private System.Windows.Forms.Button BitmapFontBtn;
         private System.Windows.Forms.Button TruetypeFontBtn;
+        private System.Windows.Forms.Button LoadBtn;
+        private System.Windows.Forms.OpenFileDialog OpenImageDlg;
     }
 }
 

@@ -67,6 +67,23 @@ namespace Azimecha.Drawing.AGG {
             return new Bitmap(w, h, new Internal.PinnedArrayDataBuffer<uint>(arrData));
         }
 
+        public static Bitmap FromFile(string strFilePath) {
+            using (IDataBuffer bufMappedFile = Internal.MemoryMapping.MapFileReadOnly(strFilePath, false))
+                return FromFile(bufMappedFile);
+        }
+
+        public static Bitmap FromFile(IDataBuffer bufFileData) {
+            SafeBitmapHandle hBitmap = new SafeBitmapHandle();
+            hBitmap.TakeObject(Interop.Functions.Loader.GetMethod<Interop.Functions.AwLoadBitmap>()(bufFileData.DataPointer, (ulong)bufFileData.DataSize),
+                true);
+
+            if (!hBitmap.IsHandleValid)
+                throw new FormatException($"Error loading {bufFileData.DataSize} byte image at {bufFileData.DataPointer}. "
+                    + "The image may be corrupt, or its format may not be supported.");
+
+            return new Bitmap(hBitmap);
+        }
+
         public Bitmap Duplicate() {
             SafeBitmapHandle hBitmap = new SafeBitmapHandle();
 

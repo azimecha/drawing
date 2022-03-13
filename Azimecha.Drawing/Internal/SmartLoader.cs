@@ -98,7 +98,7 @@ namespace Azimecha.Drawing.Internal {
 
             UnmanagedFunctionPointerAttribute attribFuncPtr = Utils.TryGetAttribute<UnmanagedFunctionPointerAttribute>(typeMethod);
             if ((attribFuncPtr is null) || (attribFuncPtr.CallingConvention == CallingConvention.StdCall))
-                lstToTry.Add("_" + typeMethod.Name + "@" + infMethod.GetParameters().Length * IntPtr.Size);
+                lstToTry.Add("_" + typeMethod.Name + "@" + GetTotalParamsSize(infMethod));
             else if (attribFuncPtr.CallingConvention == CallingConvention.Cdecl)
                 lstToTry.Add("_" + typeMethod.Name);
 
@@ -112,6 +112,21 @@ namespace Azimecha.Drawing.Internal {
                 throw new EntryPointNotFoundException($"The function {typeMethod.Name} could not be found in {hLibrary}");
 
             return Marshal.GetDelegateForFunctionPointer(pFunc, typeMethod);
+        }
+
+        private static int GetTotalParamsSize(MethodInfo infMethod) {
+            int nTotalSize = 0;
+
+            foreach (ParameterInfo infParam in infMethod.GetParameters()) {
+                int nRawSize = 0;
+
+                if (infParam.ParameterType.IsPrimitive)
+                    nRawSize = Marshal.SizeOf(infParam.ParameterType);
+
+                nTotalSize += (nRawSize < IntPtr.Size) ? IntPtr.Size : nRawSize;
+            }
+
+            return nTotalSize;
         }
 
         public void Dispose() {

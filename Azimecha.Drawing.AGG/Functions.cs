@@ -10,6 +10,7 @@ namespace Azimecha.Drawing.AGG.Interop {
 
         [SmartImport] public delegate IntPtr AwCreateBitmap(int w, int h);
         [SmartImport] public delegate IntPtr AwCreateBitmapOnBuffer(int w, int h, [In] ref AwBufferInfo infBuffer);
+        [SmartImport] public delegate IntPtr AwLoadBitmap(IntPtr pImageFileData, ulong nImageFileSize);
         [SmartImport] public delegate bool AwGetBitmapSize(IntPtr hBitmap, out int nWidth, out int nHeight);
         [SmartImport] public delegate bool AwGetBitmapDataSize(IntPtr hBitmap, out int nStride, out int nFullSize);
         [SmartImport] public delegate IntPtr AwAccessBitmapData(IntPtr hBitmap);

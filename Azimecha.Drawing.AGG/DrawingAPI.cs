@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Azimecha.Drawing.AGG {
@@ -14,14 +15,6 @@ namespace Azimecha.Drawing.AGG {
         public IBitmap CreateBitmapFromData(int nWidth, int nHeight, IDataBuffer bufData)
             => new Bitmap(nWidth, nHeight, Internal.HGlobalDataBuffer<byte>.FromExisting(bufData));
 
-        public IBitmap CreateBitmapFromFile(string strFilePath) {
-            throw new NotImplementedException();
-        }
-
-        public IBitmap CreateBitmapFromFile(IDataBuffer bufFileData) {
-            throw new NotImplementedException();
-        }
-
         public IBitmap CreateBitmapOnData(int nWidth, int nHeight, IDataBuffer bufData)
             => new Bitmap(nWidth, nHeight, bufData);
 
@@ -34,13 +27,24 @@ namespace Azimecha.Drawing.AGG {
         public ISolidBrush CreateSolidBrush(Color clr)
             => new SolidBrush(clr);
 
-        public IFontSet CreateTrueTypeFontSet(string strFilePath)
+        public IFontSet LoadTrueTypeFonts(string strFilePath)
             => new TrueTypeFontFile(strFilePath);
 
-        public IFontSet CreateTrueTypeFontSet(IDataBuffer bufData)
+        public IFontSet LoadTrueTypeFonts(IDataBuffer bufData)
             => new TrueTypeFontFile(bufData);
 
         public IFont CreateVariableWidthBitmapFont(char cGlyphZero, int nHeight, IEnumerable<FontBitmapGlyph> enuGlyphs, char cDefault = '?', bool bReverseBitOrder = false)
             => MonochromeBitmapFont.CreateVariableWidth(cGlyphZero, nHeight, enuGlyphs, cDefault, bReverseBitOrder);
+
+        public IBitmap LoadBitmap(string strFilePath)
+            => Bitmap.FromFile(strFilePath);
+
+        public IBitmap LoadBitmap(Stream stmFileData) {
+            using (IDataBuffer bufData = Internal.HGlobalDataBuffer<byte>.FromStream(stmFileData))
+                return Bitmap.FromFile(bufData);
+        }
+
+        public IBitmap LoadBitmap(IDataBuffer bufFileData)
+            => Bitmap.FromFile(bufFileData);
     }
 }

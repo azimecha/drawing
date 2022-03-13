@@ -35,11 +35,8 @@ namespace TestWinApp {
             _bmCopy = _bmImage.Duplicate();
 
             _bmih.biSize = (uint)Marshal.SizeOf(_bmih);
-            _bmih.biWidth = _bmCopy.Width;
-            _bmih.biHeight = -_bmCopy.Height;
             _bmih.biPlanes = 1;
             _bmih.biBitCount = 32;
-            _bmih.biSizeImage = (uint)_bmCopy.DataSize;
 
             _brRed = api.CreateSolidBrush(new Azimecha.Drawing.Color(255, 0, 0, 128));
 
@@ -75,7 +72,7 @@ namespace TestWinApp {
             string strTempTTF = System.IO.Path.GetTempFileName();
             System.IO.File.WriteAllBytes(strTempTTF, Properties.Resources.trim);
 
-            Azimecha.Drawing.IFontSet fontset = api.CreateTrueTypeFontSet(strTempTTF);
+            Azimecha.Drawing.IFontSet fontset = api.LoadTrueTypeFonts(strTempTTF);
             _fontTTF = fontset[0].CreateFont(24);
         }
 
@@ -88,6 +85,10 @@ namespace TestWinApp {
 
             System.Drawing.Graphics gfx = e.Graphics;
             gfx.SetClip(e.ClipRectangle);
+
+            _bmih.biWidth = _bmCopy.Width;
+            _bmih.biHeight = -_bmCopy.Height;
+            _bmih.biSizeImage = (uint)_bmCopy.DataSize;
 
             if (gfx.Clip.IsVisible(rectImage)) {
                 IntPtr hDC = gfx.GetHdc();
@@ -110,6 +111,14 @@ namespace TestWinApp {
 
         private void TruetypeFontBtn_Click(object sender, EventArgs e) {
             _fontCur = _fontTTF;
+        }
+
+        private void LoadBtn_Click(object sender, EventArgs e) {
+            if (OpenImageDlg.ShowDialog() == DialogResult.OK) {
+                _bmCopy = Azimecha.Drawing.DrawingFactory.GetDrawingAPI().LoadBitmap(OpenImageDlg.FileName);
+                _ctx = _bmCopy.CreateContext();
+                Invalidate();
+            }
         }
 
         private void TestForm_MouseMove(object sender, MouseEventArgs e) {
@@ -200,9 +209,8 @@ namespace TestWinApp {
         private static extern void RtlMoveMemory(IntPtr pDest, IntPtr pSrc, IntPtr nLength);
 
         private void ClearBtn_Click(object sender, EventArgs e) {
-            using (Azimecha.Drawing.IBitmapDataAccessor dataImage = _bmImage.AccessData(true, false))
-            using (Azimecha.Drawing.IBitmapDataAccessor dataCopy = _bmCopy.AccessData(false, true))
-                RtlMoveMemory(dataCopy.Pointer, dataImage.Pointer, (IntPtr)dataCopy.Size);
+            _bmCopy = _bmImage.Duplicate();
+            _ctx = _bmCopy.CreateContext();
             Invalidate();
         }
 
