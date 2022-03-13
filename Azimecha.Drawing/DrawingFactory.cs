@@ -22,6 +22,12 @@ namespace Azimecha.Drawing {
                 return Internal.HGlobalDataBuffer<T>.FromExisting(bufTemp);
         }
 
+        public static IDataBuffer CreateBufferFrom(System.IO.Stream stmData)
+            => Internal.HGlobalDataBuffer<byte>.FromStream(stmData);
+
+        public static IDataBuffer CreateBufferFrom<T>(System.IO.Stream stmData) where T : unmanaged
+            => Internal.HGlobalDataBuffer<T>.FromStream(stmData);
+
         public static IDataBuffer CreateBufferFrom(IntPtr pData, int nSize) {
             IDataBuffer buf = new Internal.HGlobalDataBuffer<byte>(nSize);
             Internal.Utils.CopyMemory(pData, buf.DataPointer, (ulong)nSize);

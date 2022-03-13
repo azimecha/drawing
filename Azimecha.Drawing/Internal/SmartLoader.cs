@@ -8,11 +8,11 @@ namespace Azimecha.Drawing.Internal {
     public class SmartLoader : IDisposable {
         private Type _typeClass;
         private IDictionary<Type, Delegate> _dicMethods = new Dictionary<Type, Delegate>();
-        private SafeWinAPILibraryHandle _hLibrary;
+        private INativeLibrary _library;
 
         public SmartLoader(Type typeClass, string strLibraryName) {
             _typeClass = typeClass;
-            _hLibrary = FindBestLibrary(strLibraryName);
+            _library = FindBestLibrary(strLibraryName);
 
             foreach (Type typeMethod in _typeClass.GetNestedTypes()) {
                 if (!typeMethod.IsSubclassOf(typeof(Delegate)))
@@ -22,21 +22,20 @@ namespace Azimecha.Drawing.Internal {
                 if (attrib is null)
                     continue;
 
-                _dicMethods.Add(typeMethod, FindExportedMethod(_hLibrary, typeMethod));
+                _dicMethods.Add(typeMethod, FindExportedMethod(_library, typeMethod));
             }
 
             // keep the library loaded permanently - delegates could still be around when this objext gets deleted
-            if (LibraryFunctions.LoadLibrary(_hLibrary.Name) == IntPtr.Zero)
-                throw new System.ComponentModel.Win32Exception();
+            GCHandle.Alloc(_library);
         }
 
         public T GetMethod<T>() where T : Delegate
             => (T)_dicMethods[typeof(T)];
 
-        private static SafeWinAPILibraryHandle FindBestLibrary(string strName) {
+        private static INativeLibrary FindBestLibrary(string strName) {
             List<string> lstSuffixToTry = new List<string>();
 
-            switch (SystemInfo.CoreHardware.ProcessorArchitecture) {
+            switch (SystemInfo.Architecture) {
                 case CPUArchitecture.IA32:
                     if (SystemInfo.HasCPUFeature(CPUFeature.SSE3))
                         lstSuffixToTry.Add("32_sse3");
@@ -77,20 +76,16 @@ namespace Azimecha.Drawing.Internal {
             lstSuffixToTry.Add(string.Empty);
 
             foreach (string strSuffix in lstSuffixToTry) {
-                string strFullName = $"{strName}{strSuffix}.dll";
-
-                SafeWinAPILibraryHandle hLibrary = new SafeWinAPILibraryHandle();
-                hLibrary.TakeObject(LibraryFunctions.LoadLibrary(strFullName), true);
-                if (hLibrary.IsHandleValid) {
-                    hLibrary.Name = strFullName;
-                    return hLibrary;
-                }
+                string strFullName = $"{strName}{strSuffix}.{LibraryLoader.FileExtension}";
+                try {
+                    return LibraryLoader.Load(strFullName);
+                } catch (Exception) { }
             }
 
             throw new DllNotFoundException($"Library {strName} could not be loaded (tried {lstSuffixToTry.Count} suffixes)");
         }
 
-        private static Delegate FindExportedMethod(SafeWinAPILibraryHandle hLibrary, Type typeMethod) {
+        private static Delegate FindExportedMethod(INativeLibrary library, Type typeMethod) {
             List<string> lstToTry = new List<string>();
             MethodInfo infMethod = typeMethod.GetMethod("Invoke");
 
@@ -102,16 +97,16 @@ namespace Azimecha.Drawing.Internal {
             else if (attribFuncPtr.CallingConvention == CallingConvention.Cdecl)
                 lstToTry.Add("_" + typeMethod.Name);
 
-            IntPtr pFunc = IntPtr.Zero;
+            IntPtr? pFunc = null;
             foreach (string strToTry in lstToTry) {
-                pFunc = LibraryFunctions.GetProcAddress(hLibrary.Handle, strToTry);
-                if (pFunc != IntPtr.Zero) break;
+                pFunc = library.TryGetSymbolAddress(strToTry);
+                if (!(pFunc is null)) break;
             }
 
-            if (pFunc == IntPtr.Zero)
-                throw new EntryPointNotFoundException($"The function {typeMethod.Name} could not be found in {hLibrary}");
+            if (pFunc is null)
+                throw new EntryPointNotFoundException($"The function {typeMethod.Name} could not be found in {library}");
 
-            return Marshal.GetDelegateForFunctionPointer(pFunc, typeMethod);
+            return Marshal.GetDelegateForFunctionPointer(pFunc.Value, typeMethod);
         }
 
         private static int GetTotalParamsSize(MethodInfo infMethod) {
@@ -131,30 +126,10 @@ namespace Azimecha.Drawing.Internal {
 
         public void Dispose() {
             _dicMethods.Clear();
-            _hLibrary.Dispose();
             _typeClass = null;
         }
     }
 
     [AttributeUsage(AttributeTargets.Delegate)]
     public class SmartImportAttribute : Attribute { }
-
-    internal class SafeWinAPILibraryHandle : Internal.SafeHandle {
-        protected override void CloseObjectHandle(IntPtr hLibrary) {
-            LibraryFunctions.FreeLibrary(hLibrary);
-        }
-
-        public string Name { get; set; }
-    }
-
-    internal static class LibraryFunctions {
-        [DllImport("kernel32", SetLastError = true)]
-        public static extern IntPtr LoadLibrary(string strName);
-
-        [DllImport("kernel32", SetLastError = true)]
-        public static extern IntPtr GetProcAddress(IntPtr hLibrary, string strName);
-
-        [DllImport("kernel32")]
-        public static extern bool FreeLibrary(IntPtr hLibrary);
-    }
 }

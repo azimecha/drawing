@@ -102,7 +102,7 @@ namespace Azimecha.Drawing.Internal {
             long nTotalBytesRead = 0;
 
             while (nTotalBytesRead < nMaxBytes) {
-                long nBytesLeft = nTotalBytesRead - nMaxBytes;
+                long nBytesLeft = nMaxBytes - nTotalBytesRead;
 
                 int nToRead = READ_BLOCK_SIZE;
                 if (nToRead > nBytesLeft)
@@ -111,6 +111,8 @@ namespace Azimecha.Drawing.Internal {
                 int nNewBytesRead = stmRead.Read(arrTemp, 0, nToRead);
                 if (nNewBytesRead <= 0)
                     break;
+
+                Marshal.Copy(arrTemp, 0, (IntPtr)((long)pBuffer + nTotalBytesRead), nNewBytesRead);
 
                 nTotalBytesRead += nNewBytesRead;
             }

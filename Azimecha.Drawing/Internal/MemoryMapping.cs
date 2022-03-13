@@ -8,10 +8,10 @@ namespace Azimecha.Drawing.Internal {
     public static class MemoryMapping {
         public static IDataBuffer MapFileReadOnly(string strFilePath, bool bCopyOnWrite) {
             MemoryWritability writability = bCopyOnWrite ? MemoryWritability.CopyOnWrite : MemoryWritability.ReadOnly;
-#if NETFX_40
-            return new DotnetMemoryMappedFile(strFilePath, writability);
-#else
+#if NETFRAMEWORK
             return new WindowsMemoryMappedFile(strFilePath, writability);
+#else
+            return new DotnetMemoryMappedFile(strFilePath, writability);
 #endif
         }
     }
@@ -22,7 +22,7 @@ namespace Azimecha.Drawing.Internal {
         ReadWrite
     }
 
-#if NETFX_40
+#if !NETFRAMEWORK
     internal class DotnetMemoryMappedFile : IDataBuffer {
         private System.IO.MemoryMappedFiles.MemoryMappedFile _file;
         private System.IO.MemoryMappedFiles.MemoryMappedViewAccessor _view;
@@ -63,7 +63,7 @@ namespace Azimecha.Drawing.Internal {
     }
 #endif
 
-#if !NETFX_40
+#if NETFRAMEWORK
     internal class WindowsMemoryMappedFile : IDataBuffer {
         private SafeWindowsMappedMemoryHandle _hView = new SafeWindowsMappedMemoryHandle();
         private long _nSize;
