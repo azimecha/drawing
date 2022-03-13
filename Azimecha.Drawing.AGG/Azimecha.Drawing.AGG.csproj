@@ -61,6 +61,7 @@
     <Compile Include="Bitmap.cs" />
     <Compile Include="Brush.cs" />
     <Compile Include="BufferUtils.cs" />
+    <Compile Include="DrawingAPI.cs" />
     <Compile Include="DrawingContext.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Functions.cs" />

@@ -56,6 +56,19 @@ namespace Azimecha.Drawing.Internal {
             Utils.ReadStreamToPointer(stmData, buf.DataPointer, buf.DataSize);
             return buf;
         }
+
+        public static unsafe HGlobalDataBuffer<T> FromExisting(IDataBuffer bufExisting) {
+            long nItems = bufExisting.DataSize / sizeof(T);
+
+            if (nItems > int.MaxValue)
+                throw new FormatException($"Existing buffer is too long ({nItems} items).");
+            if ((bufExisting.DataSize % sizeof(T)) != 0)
+                throw new FormatException($"Existing buffer has size {bufExisting.DataSize}, which is not evenly divisible by {sizeof(T)}");
+
+            HGlobalDataBuffer<T> bufNew = new HGlobalDataBuffer<T>((int)nItems);
+            Utils.CopyMemory(bufExisting.DataPointer, bufNew.DataPointer, (ulong)bufNew.DataSize);
+            return bufNew;
+        }
     }
 
     public class SafeGlobalHandle : SafeHandle {

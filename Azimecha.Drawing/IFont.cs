@@ -19,4 +19,9 @@ namespace Azimecha.Drawing {
         WordWrap,
         CharWrap
     }
+
+    public struct FontBitmapGlyph {
+        public short Width;
+        public byte[] Data;
+    }
 }

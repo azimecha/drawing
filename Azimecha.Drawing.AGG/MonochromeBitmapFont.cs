@@ -88,11 +88,6 @@ namespace Azimecha.Drawing.AGG {
         }
     }
 
-    public struct FontBitmapGlyph {
-        public short Width;
-        public byte[] Data;
-    }
-
     internal class GlyphBitmapBuffer : IDataBuffer {
         private HGlobalDataBuffer<Interop.AwFontGlyphInfo> _bufInfo;
         private HGlobalDataBuffer<byte> _bufData;

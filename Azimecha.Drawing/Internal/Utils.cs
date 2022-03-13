@@ -117,6 +117,13 @@ namespace Azimecha.Drawing.Internal {
 
             return nTotalBytesRead;
         }
+
+        [DllImport("kernel32")]
+        private static extern void RtlMoveMemory(IntPtr pDest, IntPtr pSource, IntPtr nBytes);
+
+        public static void CopyMemory(IntPtr pSource, IntPtr pDest, ulong nBytes) {
+            RtlMoveMemory(pDest, pSource, (IntPtr)nBytes);
+        }
     }
 
     public class Transformer<TI, TO> : IEnumerable<TO> {

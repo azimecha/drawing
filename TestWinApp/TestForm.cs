@@ -27,8 +27,11 @@ namespace TestWinApp {
         }
 
         private void TestForm_Load(object sender, EventArgs e) {
+            Azimecha.Drawing.IDrawingAPI api = Azimecha.Drawing.DrawingFactory.GetDrawingAPI();
+
             byte[] arrData = GetImageData(Properties.Resources.cringe);
-            _bmImage = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cringe.Width, Properties.Resources.cringe.Height, arrData);
+            _bmImage = api.CreateBitmapOnData(Properties.Resources.cringe.Width, Properties.Resources.cringe.Height,
+                Azimecha.Drawing.DrawingFactory.CreateBufferOn(arrData));
             _bmCopy = _bmImage.Duplicate();
 
             _bmih.biSize = (uint)Marshal.SizeOf(_bmih);
@@ -38,41 +41,41 @@ namespace TestWinApp {
             _bmih.biBitCount = 32;
             _bmih.biSizeImage = (uint)_bmCopy.DataSize;
 
-            _brRed = new Azimecha.Drawing.AGG.SolidBrush(255, 0, 0, 128);
+            _brRed = api.CreateSolidBrush(new Azimecha.Drawing.Color(255, 0, 0, 128));
 
-            using (Azimecha.Drawing.AGG.Bitmap bmPattern = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.nft32.Width,
-                Properties.Resources.nft32.Height, GetImageData(Properties.Resources.nft32)))
-                _brPattern = new Azimecha.Drawing.AGG.PatternBrush(bmPattern);
+            using (Azimecha.Drawing.IBitmap bmPattern = api.CreateBitmapOnData(Properties.Resources.nft32.Width,
+                Properties.Resources.nft32.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.nft32))))
+                _brPattern = api.CreateBitmapBrush(bmPattern, Azimecha.Drawing.ScaleMode.Tile);
 
-            using (Azimecha.Drawing.AGG.Bitmap bmStretch = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.smug_trollface_cutout.Width,
-                Properties.Resources.smug_trollface_cutout.Height, GetImageData(Properties.Resources.smug_trollface_cutout)))
-                _brStretch = new Azimecha.Drawing.AGG.ScaledBrush(bmStretch, Azimecha.Drawing.ScaleMode.Stretch);
+            using (Azimecha.Drawing.IBitmap bmStretch = api.CreateBitmapOnData(Properties.Resources.smug_trollface_cutout.Width,
+                Properties.Resources.smug_trollface_cutout.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.smug_trollface_cutout))))
+                _brStretch = api.CreateBitmapBrush(bmStretch, Azimecha.Drawing.ScaleMode.Stretch);
 
-            using (Azimecha.Drawing.AGG.Bitmap bmHoriz1 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cursed_wikihow.Width,
-                Properties.Resources.cursed_wikihow.Height, GetImageData(Properties.Resources.cursed_wikihow))) 
-                _brFillH = new Azimecha.Drawing.AGG.ScaledBrush(bmHoriz1, Azimecha.Drawing.ScaleMode.Fill);
+            using (Azimecha.Drawing.IBitmap bmHoriz1 = api.CreateBitmapOnData(Properties.Resources.cursed_wikihow.Width,
+                Properties.Resources.cursed_wikihow.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.cursed_wikihow))))
+                _brFillH = api.CreateBitmapBrush(bmHoriz1, Azimecha.Drawing.ScaleMode.Fill);
 
-            using (Azimecha.Drawing.AGG.Bitmap bmHoriz2 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.cpp_vs_c.Width,
-                Properties.Resources.cpp_vs_c.Height, GetImageData(Properties.Resources.cpp_vs_c)))
-                _brFitH = new Azimecha.Drawing.AGG.ScaledBrush(bmHoriz2, Azimecha.Drawing.ScaleMode.Fit);
+            using (Azimecha.Drawing.IBitmap bmHoriz2 = api.CreateBitmapOnData(Properties.Resources.cpp_vs_c.Width,
+                Properties.Resources.cpp_vs_c.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.cpp_vs_c))))
+                _brFitH = api.CreateBitmapBrush(bmHoriz2, Azimecha.Drawing.ScaleMode.Fit);
 
-            using (Azimecha.Drawing.AGG.Bitmap bmVert1 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.we_are_not_the_same.Width,
-                Properties.Resources.we_are_not_the_same.Height, GetImageData(Properties.Resources.we_are_not_the_same)))
-                _brFillV = new Azimecha.Drawing.AGG.ScaledBrush(bmVert1, Azimecha.Drawing.ScaleMode.Fill);
+            using (Azimecha.Drawing.IBitmap bmVert1 = api.CreateBitmapOnData(Properties.Resources.we_are_not_the_same.Width,
+                Properties.Resources.we_are_not_the_same.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.we_are_not_the_same))))
+                _brFillV = api.CreateBitmapBrush(bmVert1, Azimecha.Drawing.ScaleMode.Fill);
 
-            using (Azimecha.Drawing.AGG.Bitmap bmVert2 = Azimecha.Drawing.AGG.Bitmap.CreateOnArray(Properties.Resources.vim_can_cutout.Width,
-                Properties.Resources.vim_can_cutout.Height, GetImageData(Properties.Resources.vim_can_cutout)))
-                _brFitV = new Azimecha.Drawing.AGG.ScaledBrush(bmVert2, Azimecha.Drawing.ScaleMode.Fit);
+            using (Azimecha.Drawing.IBitmap bmVert2 = api.CreateBitmapOnData(Properties.Resources.vim_can_cutout.Width,
+                Properties.Resources.vim_can_cutout.Height, Azimecha.Drawing.DrawingFactory.CreateBufferOn(GetImageData(Properties.Resources.vim_can_cutout))))
+                _brFitV = api.CreateBitmapBrush(bmVert2, Azimecha.Drawing.ScaleMode.Fit);
 
             _ctx = _bmCopy.CreateContext();
 
             BitArray arrFontBits = new BitArray(Properties.Resources.seabios8x14);
-            _fontBitmap = Azimecha.Drawing.AGG.MonochromeBitmapFont.CreateFixedWidth('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
+            _fontBitmap = api.CreateClassicBitmapFont('\0', 8, 14, arrFontBits, bReverseBitOrder: true);
 
             string strTempTTF = System.IO.Path.GetTempFileName();
             System.IO.File.WriteAllBytes(strTempTTF, Properties.Resources.trim);
 
-            Azimecha.Drawing.IFontSet fontset = new Azimecha.Drawing.AGG.TrueTypeFontFile(strTempTTF);
+            Azimecha.Drawing.IFontSet fontset = api.CreateTrueTypeFontSet(strTempTTF);
             _fontTTF = fontset[0].CreateFont(24);
         }
 

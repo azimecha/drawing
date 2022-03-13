@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrawingFactory.cs" />
     <Compile Include="IDataBuffer.cs" />
+    <Compile Include="IDrawingAPI.cs" />
     <Compile Include="Internal\ArrayLikeEnumerator.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Internal\HGlobalDataBuffer.cs" />
@@ -93,5 +95,6 @@
   <ItemGroup Condition="$([System.Version]::Parse('$(TargetFrameworkVersion.Substring(1))').CompareTo($([System.Version]::Parse('4.0'))))   &gt;= 0">
     <Reference Include="System.IO.MemoryMappedFiles" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
