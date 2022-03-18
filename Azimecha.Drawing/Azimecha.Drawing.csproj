@@ -4,6 +4,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net20;netcoreapp3.0</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
 	  <PackageReference Include="Microsoft.ML.CpuMath">

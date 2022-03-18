@@ -7,6 +7,9 @@ namespace Azimecha.Drawing.AGG {
         private SafeBrushHandle _hBrush = new SafeBrushHandle();
         internal SafeBrushHandle Handle => _hBrush;
         public override string ToString() => _hBrush.ToString();
+
+        public IPen CreatePen(float fThickness)
+            => new Pen(this, fThickness);
     }
 
     internal class SafeBrushHandle : Internal.SafeHandle {

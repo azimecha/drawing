@@ -20,7 +20,12 @@ namespace TestCoreApp {
             IBrush brStretch = api.CreateBitmapBrush(bmStretch, ScaleMode.Stretch);
             IBrush brTile = api.CreateBitmapBrush(bmTile, ScaleMode.Tile);
 
-            float fSliceSize = (float)Math.PI / 8;
+            IPen penSolid1 = brSolid1.CreatePen(4.0f);
+            IPen penSolid2 = brSolid2.CreatePen(4.0f);
+            IPen penSolid3 = api.CreateSolidBrush(new Color(0, 192, 0, 255)).CreatePen(4.0f);
+            IPen penSolid4 = api.CreateSolidBrush(new Color(0, 0, 255, 255)).CreatePen(4.0f);
+
+            float fSliceSize = (float)Math.PI / 3;
 
             using (IDrawingContext ctx = bmMain.CreateContext()) {
                 ctx.BlitImage(bmStretch, 298, 160, 183, 164);
@@ -28,6 +33,11 @@ namespace TestCoreApp {
                 ctx.FillText(brSolid1, fntFixed, "ALERT:\nBIG CHUNGUS SPOTTED", 334, 16, 143, 75, Alignment.Center, Alignment.Center);
                 ctx.FillText(brSolid2, fntVector, "brought to you by C#", 0, 0, bmMain.Width, bmMain.Height, Alignment.Near,
                     Alignment.Far, TextWrapping.None);
+
+                ctx.DrawArc(penSolid1, 26, 124, 136, 97, 0, fSliceSize);
+                ctx.DrawArc(penSolid2, 26, 124, 136, 97, fSliceSize, fSliceSize);
+                ctx.DrawArc(penSolid3, 26, 124, 136, 97, fSliceSize * 2, fSliceSize);
+                ctx.DrawArc(penSolid4, 26, 124, 136, 97, fSliceSize * 3, fSliceSize);
 
                 ctx.FillPieSlice(brSolid1, 26, 124, 136, 97, 0, fSliceSize);
                 ctx.FillPieSlice(brSolid2, 26, 124, 136, 97, fSliceSize, fSliceSize);
