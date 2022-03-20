@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Azimecha.Drawing.Internal;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public static class SystemInfo {
 #if NETFRAMEWORK
         public static CPUArchitecture Architecture => CoreHardware.ProcessorArchitecture;
@@ -53,7 +54,7 @@ namespace Azimecha.Drawing.Internal {
 
                 case CPUFeature.CompareExchange:
                 case CPUFeature.MMX:
-                    return (Architecture == CPUArchitecture.IA32) || (Architecture == CPUArchitecture.AMD64);
+                    return Architecture == CPUArchitecture.IA32 || Architecture == CPUArchitecture.AMD64;
 
                 case CPUFeature.SSE1:
                     return System.Runtime.Intrinsics.X86.Sse.IsSupported;

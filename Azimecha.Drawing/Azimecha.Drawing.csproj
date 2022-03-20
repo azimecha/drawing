@@ -11,4 +11,7 @@
 	    <Version>1.7.1</Version>
 	  </PackageReference>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
+	</ItemGroup>
 </Project>

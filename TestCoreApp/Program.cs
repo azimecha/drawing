@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Azimecha.Core;
 using Azimecha.Drawing;
 
 namespace TestCoreApp {

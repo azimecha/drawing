@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -57,18 +58,18 @@ namespace Azimecha.Drawing.AGG {
             int nExpectedLength = w * h * 4;
             if (arrData.Length != nExpectedLength)
                 throw new ArgumentException($"Incorrect data size for {w}x{h} bitmap: expected {nExpectedLength} bytes, got {arrData.Length}");
-            return new Bitmap(w, h, new Internal.PinnedArrayDataBuffer<byte>(arrData));
+            return new Bitmap(w, h, new PinnedArrayDataBuffer<byte>(arrData));
         }
 
         public static Bitmap CreateOnArray(int w, int h, uint[] arrData) {
             int nExpectedLength = w * h;
             if (arrData.Length != nExpectedLength)
                 throw new ArgumentException($"Incorrect data size for {w}x{h} bitmap: expected {nExpectedLength} pixels, got {arrData.Length}");
-            return new Bitmap(w, h, new Internal.PinnedArrayDataBuffer<uint>(arrData));
+            return new Bitmap(w, h, new PinnedArrayDataBuffer<uint>(arrData));
         }
 
         public static Bitmap FromFile(string strFilePath) {
-            using (IDataBuffer bufMappedFile = Internal.MemoryMapping.MapFileReadOnly(strFilePath, false))
+            using (IDataBuffer bufMappedFile = MemoryMapping.MapFileReadOnly(strFilePath, false))
                 return FromFile(bufMappedFile);
         }
 
@@ -127,7 +128,7 @@ namespace Azimecha.Drawing.AGG {
         public IDrawingContext CreateContext() => DrawingContext.CreateFullContext(this);
     }
 
-    internal class SafeBitmapHandle : Internal.SafeHandle {
+    internal class SafeBitmapHandle : Core.SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteBitmap>()(hObject);
         }

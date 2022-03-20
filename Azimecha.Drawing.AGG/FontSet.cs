@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Azimecha.Drawing.AGG {
     public abstract class FontSet : IFontSet {
-        private Internal.IndexEnumerationAdaptor<IFontPrototype> _adaptor;
+        private IndexEnumerationAdaptor<IFontPrototype> _adaptor;
         private SafeFontSetHandle _hSet;
         private int _nCount;
 
@@ -16,7 +17,7 @@ namespace Azimecha.Drawing.AGG {
             if (_nCount < 0)
                 throw new InfoQueryFailedException("Unable to get size of font set");
 
-            _adaptor = new Internal.IndexEnumerationAdaptor<IFontPrototype>(this);
+            _adaptor = new IndexEnumerationAdaptor<IFontPrototype>(this);
         }
 
         public IFontPrototype this[int nIndex] {
@@ -42,7 +43,7 @@ namespace Azimecha.Drawing.AGG {
                 _nIndex = nIndex;
 
                 IntPtr pName = Interop.Functions.Loader.GetMethod<Interop.Functions.AwGetFontNameFromSet>()(set._hSet.Handle, nIndex);
-                _strName = (pName != IntPtr.Zero) ? Internal.Utils.PtrToStringUTF8(pName) : "";
+                _strName = (pName != IntPtr.Zero) ? Utils.PtrToStringUTF8(pName) : "";
             }
 
             public string Name => _strName;
@@ -59,7 +60,7 @@ namespace Azimecha.Drawing.AGG {
         }
     }
 
-    internal class SafeFontSetHandle : Internal.SafeHandle {
+    internal class SafeFontSetHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteFontSet>()(hObject);
         }

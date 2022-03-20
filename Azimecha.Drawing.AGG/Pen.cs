@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,7 +26,7 @@ namespace Azimecha.Drawing.AGG {
         public override string ToString() => _hPen.ToString();
     }
 
-    internal class SafePenHandle : Internal.SafeHandle {
+    internal class SafePenHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hPen) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeletePen>()(hPen);
         }

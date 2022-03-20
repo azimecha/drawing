@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Azimecha.Drawing.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public class IndexEnumerationAdaptor<T> : IEnumerable<T> {
         private IArrayLike<T> _arr;
 

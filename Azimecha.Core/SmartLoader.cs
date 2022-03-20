@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Azimecha.Drawing.Internal;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public class SmartLoader : IDisposable {
         private Type _typeClass;
         private IDictionary<Type, Delegate> _dicMethods = new Dictionary<Type, Delegate>();
@@ -25,8 +26,8 @@ namespace Azimecha.Drawing.Internal {
                 _dicMethods.Add(typeMethod, FindExportedMethod(_library, typeMethod));
             }
 
-            // keep the library loaded permanently - delegates could still be around when this objext gets deleted
-            GCHandle.Alloc(_library);
+            // keep the library loaded permanently - delegates could still be around when this object gets deleted
+            _library.MakePermanent();
         }
 
         public T GetMethod<T>() where T : Delegate
@@ -92,7 +93,7 @@ namespace Azimecha.Drawing.Internal {
             lstToTry.Add(typeMethod.Name);
 
             UnmanagedFunctionPointerAttribute attribFuncPtr = Utils.TryGetAttribute<UnmanagedFunctionPointerAttribute>(typeMethod);
-            if ((attribFuncPtr is null) || (attribFuncPtr.CallingConvention == CallingConvention.StdCall))
+            if (attribFuncPtr is null || attribFuncPtr.CallingConvention == CallingConvention.StdCall)
                 lstToTry.Add("_" + typeMethod.Name + "@" + GetTotalParamsSize(infMethod));
             else if (attribFuncPtr.CallingConvention == CallingConvention.Cdecl)
                 lstToTry.Add("_" + typeMethod.Name);
@@ -118,7 +119,7 @@ namespace Azimecha.Drawing.Internal {
                 if (infParam.ParameterType.IsPrimitive)
                     nRawSize = Marshal.SizeOf(infParam.ParameterType);
 
-                nTotalSize += (nRawSize < IntPtr.Size) ? IntPtr.Size : nRawSize;
+                nTotalSize += nRawSize < IntPtr.Size ? IntPtr.Size : nRawSize;
             }
 
             return nTotalSize;
@@ -129,7 +130,9 @@ namespace Azimecha.Drawing.Internal {
             _typeClass = null;
         }
     }
+}
 
+namespace Azimecha.Drawing.Internal {
     [AttributeUsage(AttributeTargets.Delegate)]
     public class SmartImportAttribute : Attribute { }
 }

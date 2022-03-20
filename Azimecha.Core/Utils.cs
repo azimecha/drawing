@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public static class Utils {
         public static T[] ConvertToArray<T>(IEnumerable<T> enuObjects) {
             List<T> lst = new List<T>();
@@ -61,7 +61,7 @@ namespace Azimecha.Drawing.Internal {
             string strCRLF = string.Empty;
 
             for (int nChar = 0; nChar < strLF.Length; nChar++) {
-                if ((strLF[nChar] == '\n') && ((nChar == 0) || (strLF[nChar - 1] != '\r')))
+                if (strLF[nChar] == '\n' && (nChar == 0 || strLF[nChar - 1] != '\r'))
                     strCRLF += "\r\n";
                 else
                     strCRLF += strLF[nChar];
@@ -91,7 +91,7 @@ namespace Azimecha.Drawing.Internal {
                 if (IntPtr.Size >= 8)
                     return ulong.MaxValue;
 
-                return (1UL << (IntPtr.Size * 8)) - 1;
+                return (1UL << IntPtr.Size * 8) - 1;
             }
         }
 
@@ -127,7 +127,9 @@ namespace Azimecha.Drawing.Internal {
             RtlMoveMemory(pDest, pSource, (IntPtr)nBytes);
         }
     }
+}
 
+namespace Azimecha.Drawing.Internal {
     public class Transformer<TI, TO> : IEnumerable<TO> {
         private TransformProc _proc;
         private IEnumerable<TI> _enuInner;

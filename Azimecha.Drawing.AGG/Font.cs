@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,7 +18,7 @@ namespace Azimecha.Drawing.AGG {
         public float Height => FontInfo.nHeight;
 
         public PointF GetTextSize(string strText) {
-            byte[] arrData = StringToBytes(Internal.Utils.ConvertLFToCRLF(strText));
+            byte[] arrData = StringToBytes(Utils.ConvertLFToCRLF(strText));
 
             PointF ptSize;
             if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwGetTextSize>()(_hFont.Handle, arrData, out ptSize.X, out ptSize.Y))
@@ -32,7 +33,7 @@ namespace Azimecha.Drawing.AGG {
         internal SafeFontHandle Handle => _hFont;
     }
 
-    internal class SafeFontHandle : Internal.SafeHandle {
+    internal class SafeFontHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteFont>()(hObject);
         }

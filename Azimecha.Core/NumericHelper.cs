@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public interface INumericFunctions<T> {
         T Zero { get; }
         T Add(T a, T b);

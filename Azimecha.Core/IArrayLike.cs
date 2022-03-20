@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Azimecha.Drawing {
+namespace Azimecha.Core {
     public interface IArrayLike<T> : IEnumerable<T> {
         int Count { get; }
         T this[int nIndex] { get; }

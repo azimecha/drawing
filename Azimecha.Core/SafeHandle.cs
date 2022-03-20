@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public abstract class SafeHandle : IDisposable {
         private IntPtr _hObject;
         private bool _bOwnsObject;
@@ -64,7 +64,7 @@ namespace Azimecha.Drawing.Internal {
             => "{" + GetType().Name + ":" + _hObject.ToInt64().ToString("X" + IntPtr.Size * 2) + "}";
 
         public override bool Equals(object obj)
-            => (obj is SafeHandle h) && (_hObject == h._hObject);
+            => obj is SafeHandle h && _hObject == h._hObject;
 
         public override int GetHashCode()
             => _hObject.GetHashCode();

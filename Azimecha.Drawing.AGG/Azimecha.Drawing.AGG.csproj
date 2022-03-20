@@ -6,6 +6,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
 	  <ProjectReference Include="..\Azimecha.Drawing\Azimecha.Drawing.csproj" />
 	</ItemGroup>
 	<ItemGroup>

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public class PinnedArrayDataBuffer<T> : IDataBuffer {
         private SafePinnedGCHandle _hObject;
         private T[] _arrData;

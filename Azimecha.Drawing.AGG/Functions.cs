@@ -1,4 +1,5 @@
-﻿using Azimecha.Drawing.Internal;
+﻿using Azimecha.Core;
+using Azimecha.Drawing.Internal;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;

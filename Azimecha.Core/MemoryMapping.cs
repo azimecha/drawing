@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Azimecha.Core;
+using Azimecha.Drawing.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public static class MemoryMapping {
         public static IDataBuffer MapFileReadOnly(string strFilePath, bool bCopyOnWrite) {
             MemoryWritability writability = bCopyOnWrite ? MemoryWritability.CopyOnWrite : MemoryWritability.ReadOnly;
@@ -102,12 +104,12 @@ namespace Azimecha.Drawing.Internal {
                     throw new Win32Exception();
 
                 uint nFileSizeLow = GetFileSize(hFile.Handle, out uint nFileSizeHigh);
-                if ((nFileSizeLow == 0xFFFF_FFFF) && (Marshal.GetLastWin32Error() != 0))
+                if (nFileSizeLow == 0xFFFF_FFFF && Marshal.GetLastWin32Error() != 0)
                     throw new Win32Exception();
 
-                ulong nFileSize = ((ulong)nFileSizeHigh << 32) | nFileSizeLow;
+                ulong nFileSize = (ulong)nFileSizeHigh << 32 | nFileSizeLow;
 
-                if ((nFileSize > long.MaxValue) || (nFileSize > Utils.IntPtrMaxValue))
+                if (nFileSize > long.MaxValue || nFileSize > Utils.IntPtrMaxValue)
                     throw new FormatException($"File \"{strFilePath}\" is too large to use as a data buffer");
 
                 _nSize = (long)nFileSize;
@@ -153,7 +155,7 @@ namespace Azimecha.Drawing.Internal {
         }
 
         [DllImport("kernel32", SetLastError = true)]
-        private static extern IntPtr CreateFile(string strName, FileAccess access, FileSharing nShareMode, IntPtr pSecAttrib, CreationDisposition nCreationDisp, 
+        private static extern IntPtr CreateFile(string strName, FileAccess access, FileSharing nShareMode, IntPtr pSecAttrib, CreationDisposition nCreationDisp,
             uint flags, IntPtr hTemplate);
 
         private enum MemoryProtection : uint {

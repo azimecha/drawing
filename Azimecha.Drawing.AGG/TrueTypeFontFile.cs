@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,13 +9,13 @@ namespace Azimecha.Drawing.AGG {
             : base(CreateOnTTFData(bufData, bDisposeBuffer)) { }
 
         public TrueTypeFontFile(byte[] arrData) 
-            : this(new Internal.PinnedArrayDataBuffer<byte>(arrData)) { }
+            : this(new PinnedArrayDataBuffer<byte>(arrData)) { }
 
         public TrueTypeFontFile(string strPath) 
-            : this(Internal.MemoryMapping.MapFileReadOnly(strPath, false)) { }
+            : this(MemoryMapping.MapFileReadOnly(strPath, false)) { }
 
         public TrueTypeFontFile(System.IO.Stream stmData)
-            : this(Internal.HGlobalDataBuffer<byte>.FromStream(stmData)) { }
+            : this(HGlobalDataBuffer<byte>.FromStream(stmData)) { }
 
         private static SafeFontSetHandle CreateOnTTFData(IDataBuffer bufData, bool bDisposeBuffer) {
             SafeFontSetHandle hFontSet = new SafeFontSetHandle();

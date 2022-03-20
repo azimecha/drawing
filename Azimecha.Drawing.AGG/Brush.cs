@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,8 @@ namespace Azimecha.Drawing.AGG {
             => new Pen(this, fThickness);
     }
 
-    internal class SafeBrushHandle : Internal.SafeHandle {
+
+    internal class SafeBrushHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteBrush>()(hObject);
         }

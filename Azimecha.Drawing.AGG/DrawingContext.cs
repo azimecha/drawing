@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -76,12 +77,13 @@ namespace Azimecha.Drawing.AGG {
 
         public void FillText(IBrush brFill, IFont font, string strText, float x, float y) {
             if (!Interop.Functions.Loader.GetMethod<Interop.Functions.AwFillText>()(_hContext.Handle, ((Brush)brFill).Handle.Handle, 
-                    ((Font)font).Handle.Handle, x, y, Font.StringToBytes(Internal.Utils.ConvertLFToCRLF(strText))))
+                    ((Font)font).Handle.Handle, x, y, Font.StringToBytes(Utils.ConvertLFToCRLF(strText))))
                 throw new DrawOperationFailedException($"Error filling text \"{strText}\" at X={x} Y={y} with brush {brFill} and font {font}");
         }
     }
 
-    internal class SafeContextHandle : Internal.SafeHandle {
+
+    internal class SafeContextHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hContext) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeleteContext>()(hContext);
         }

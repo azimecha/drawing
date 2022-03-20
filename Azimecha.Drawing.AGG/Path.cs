@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -48,7 +49,7 @@ namespace Azimecha.Drawing.AGG {
         }
 
         private Interop.AwPathPoint[] ConvertPoints(IEnumerable<PointF> enuPoints)
-            => Internal.Utils.ConvertToArray(new Internal.Transformer<PointF, Interop.AwPathPoint>(enuPoints, p => new Interop.AwPathPoint() { x = p.X, y = p.Y }));
+            => Utils.ConvertToArray(new Internal.Transformer<PointF, Interop.AwPathPoint>(enuPoints, p => new Interop.AwPathPoint() { x = p.X, y = p.Y }));
 
         public void AddPolygon(IEnumerable<PointF> enuPoints) {
             Interop.AwPathPoint[] arrPoints = ConvertPoints(enuPoints);
@@ -110,7 +111,7 @@ namespace Azimecha.Drawing.AGG {
         internal SafePathHandle Handle => _hPath;
     }
 
-    internal class SafePathHandle : Internal.SafeHandle {
+    internal class SafePathHandle : SafeHandle {
         protected override void CloseObjectHandle(IntPtr hObject) {
             Interop.Functions.Loader.GetMethod<Interop.Functions.AwDeletePath>()(hObject);
         }

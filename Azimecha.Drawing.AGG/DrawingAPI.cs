@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azimecha.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace Azimecha.Drawing.AGG {
             => (modeScale == ScaleMode.Tile) ? (IBitmapBrush)new PatternBrush((Bitmap)bitmap) : (IBitmapBrush)new ScaledBrush((Bitmap)bitmap, modeScale);
 
         public IBitmap CreateBitmapFromData(int nWidth, int nHeight, IDataBuffer bufData)
-            => new Bitmap(nWidth, nHeight, Internal.HGlobalDataBuffer<byte>.FromExisting(bufData));
+            => new Bitmap(nWidth, nHeight, HGlobalDataBuffer<byte>.FromExisting(bufData));
 
         public IBitmap CreateBitmapOnData(int nWidth, int nHeight, IDataBuffer bufData)
             => new Bitmap(nWidth, nHeight, bufData);
@@ -40,7 +41,7 @@ namespace Azimecha.Drawing.AGG {
             => Bitmap.FromFile(strFilePath);
 
         public IBitmap LoadBitmap(Stream stmFileData) {
-            using (IDataBuffer bufData = Internal.HGlobalDataBuffer<byte>.FromStream(stmFileData))
+            using (IDataBuffer bufData = HGlobalDataBuffer<byte>.FromStream(stmFileData))
                 return Bitmap.FromFile(bufData);
         }
 

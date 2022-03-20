@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Azimecha.Core;
+using Azimecha.Drawing.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public static class LibraryLoader {
         public static INativeLibrary Load(string strName) {
 #if NETFRAMEWORK
@@ -38,6 +40,7 @@ namespace Azimecha.Drawing.Internal {
     public interface INativeLibrary : IDisposable {
         IntPtr GetSymbolAddress(string strName);
         IntPtr? TryGetSymbolAddress(string strName);
+        void MakePermanent();
     }
 
 #if NETFRAMEWORK
@@ -64,7 +67,7 @@ namespace Azimecha.Drawing.Internal {
 
         public IntPtr? TryGetSymbolAddress(string strName) {
             IntPtr pSym = GetProcAddress(_hModule.Handle, strName);
-            return (pSym == IntPtr.Zero) ? (IntPtr?)null : pSym;
+            return pSym == IntPtr.Zero ? (IntPtr?)null : pSym;
         }
 
         public void Dispose() {
@@ -80,6 +83,11 @@ namespace Azimecha.Drawing.Internal {
 
         [DllImport("kernel32", SetLastError = true)]
         public static extern IntPtr GetProcAddress(IntPtr hLibrary, string strName);
+
+        public void MakePermanent() {
+            if (LoadLibrary(_strName) == IntPtr.Zero)
+                throw new Win32Exception();
+        }
     }
 
     internal class SafeWindowsModuleHandle : SafeHandle {
@@ -112,6 +120,10 @@ namespace Azimecha.Drawing.Internal {
 
         public override string ToString() {
             return $"{_strName} @ {_hLibrary.Handle}";
+        }
+
+        public void MakePermanent() {
+            NativeLibrary.Load(_strName);
         }
     }
 

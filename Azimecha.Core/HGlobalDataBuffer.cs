@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Azimecha.Drawing.Internal {
+namespace Azimecha.Core {
     public class HGlobalDataBuffer<T> : IDataBuffer where T : unmanaged {
         private SafeGlobalHandle _hData = new SafeGlobalHandle();
         private int _nCount = 0;
@@ -62,7 +62,7 @@ namespace Azimecha.Drawing.Internal {
 
             if (nItems > int.MaxValue)
                 throw new FormatException($"Existing buffer is too long ({nItems} items).");
-            if ((bufExisting.DataSize % sizeof(T)) != 0)
+            if (bufExisting.DataSize % sizeof(T) != 0)
                 throw new FormatException($"Existing buffer has size {bufExisting.DataSize}, which is not evenly divisible by {sizeof(T)}");
 
             HGlobalDataBuffer<T> bufNew = new HGlobalDataBuffer<T>((int)nItems);
@@ -77,3 +77,4 @@ namespace Azimecha.Drawing.Internal {
         }
     }
 }
+

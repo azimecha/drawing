@@ -1,4 +1,4 @@
-﻿using Azimecha.Drawing.Internal;
+﻿using Azimecha.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -74,7 +74,7 @@ namespace Azimecha.Drawing.AGG {
             byte[] arrNewData = new byte[glyph.Data.Length];
 
             for (int nByte = 0; nByte < glyph.Data.Length; nByte++)
-                arrNewData[nByte] = Internal.Utils.ReverseBits(glyph.Data[nByte]);
+                arrNewData[nByte] = Utils.ReverseBits(glyph.Data[nByte]);
 
             glyph.Data = arrNewData;
             return glyph;
