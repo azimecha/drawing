@@ -4,30 +4,27 @@ using System.Text;
 using System.Threading;
 
 namespace Azimecha.Core {
-    public interface IHandle : IDisposable {
-        void TakeObject(IntPtr hObject, bool bOwnObject);
-        IntPtr UncheckedHandle { get; }
-        IntPtr Handle { get; }
-        bool IsHandleValid { get; }
-    }
-
-    public abstract class SafeHandle : IHandle {
+    public abstract class OrderedSafeHandle : OrderedDisposable, IHandle {
         private IntPtr _hObject;
         private bool _bOwnsObject;
 
-        public SafeHandle() {
+        public OrderedSafeHandle() {
             _hObject = GetInvalidHandleValue();
             _bOwnsObject = false;
         }
 
-        public SafeHandle(IntPtr hObject, bool bOwnObject) {
+        public OrderedSafeHandle(IntPtr hObject, bool bOwnObject) {
             _hObject = hObject;
             _bOwnsObject = bOwnObject;
         }
 
         public void TakeObject(IntPtr hObject, bool bOwnObject) {
+            if (Disposed)
+                throw new InvalidOperationException("An OrderedSafeHandle cannot be reinitialized after being disposed");
+
             if (Interlocked.CompareExchange(ref _hObject, hObject, GetInvalidHandleValue()) != GetInvalidHandleValue())
-                throw new InvalidOperationException("The SafeHandle already contains a value");
+                throw new InvalidOperationException("The OrderedSafeHandle already contains a value");
+
             _bOwnsObject = bOwnObject;
         }
 
@@ -48,23 +45,12 @@ namespace Azimecha.Core {
         protected virtual bool CheckHandleValid(IntPtr hObject) => hObject != GetInvalidHandleValue();
         protected virtual IntPtr GetInvalidHandleValue() => IntPtr.Zero;
 
-        protected void Dispose(bool bDisposing) {
+        protected override void Dispose(bool bDisposing) {
             // Do not change this code. Override CloseObjectHandle.
             IntPtr hObject = Interlocked.Exchange(ref _hObject, GetInvalidHandleValue());
             if (_bOwnsObject && CheckHandleValid(hObject))
                 CloseObjectHandle(hObject);
             _bOwnsObject = false;
-        }
-
-        ~SafeHandle() {
-            // Do not change this code. Override CloseObjectHandle.
-            Dispose(bDisposing: false);
-        }
-
-        public void Dispose() {
-            // Do not change this code. Override CloseObjectHandle.
-            Dispose(bDisposing: true);
-            GC.SuppressFinalize(this);
         }
 
         public override string ToString()

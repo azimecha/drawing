@@ -86,6 +86,25 @@ namespace Azimecha.Core {
 
         public static string PtrToStringUTF8(IntPtr pData) => Encoding.UTF8.GetString(PtrToNarrowChars(pData));
 
+        public static byte[] StringToUTF8Z(string str) => Encoding.UTF8.GetBytes(str + "\0");
+
+        public static string ArrayToStringUTF8Z(byte[] arrData) {
+            byte[] arrBeforeNull = null;
+
+            for (int i = 0; i < arrData.Length; i++) {
+                if (arrData[i] == 0) {
+                    arrBeforeNull = new byte[i];
+                    Array.Copy(arrData, arrBeforeNull, i);
+                    break;
+                }
+            }
+
+            if (arrBeforeNull is null)
+                arrBeforeNull = arrData;
+
+            return Encoding.UTF8.GetString(arrBeforeNull);
+        }
+
         public static ulong IntPtrMaxValue {
             get {
                 if (IntPtr.Size >= 8)
@@ -125,6 +144,16 @@ namespace Azimecha.Core {
 
         public static void CopyMemory(IntPtr pSource, IntPtr pDest, ulong nBytes) {
             RtlMoveMemory(pDest, pSource, (IntPtr)nBytes);
+        }
+
+        public static T TryGetAttribute<T>(System.Reflection.ICustomAttributeProvider provider) where T : Attribute
+            => (T)TryGetAttribute(provider, typeof(T));
+
+        public static Attribute TryGetAttribute(System.Reflection.ICustomAttributeProvider provider, Type typeAttrib) {
+            foreach (Attribute attrib in provider.GetCustomAttributes(true))
+                if (typeAttrib.IsAssignableFrom(attrib.GetType()))
+                    return attrib;
+            return null;
         }
     }
 }

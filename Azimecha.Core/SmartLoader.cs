@@ -130,9 +130,8 @@ namespace Azimecha.Core {
             _typeClass = null;
         }
     }
-}
 
-namespace Azimecha.Drawing.Internal {
     [AttributeUsage(AttributeTargets.Delegate)]
     public class SmartImportAttribute : Attribute { }
 }
+
