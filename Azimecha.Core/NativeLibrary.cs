@@ -11,6 +11,8 @@ namespace Azimecha.Core {
         public static INativeLibrary Load(string strName) {
 #if NETFRAMEWORK
             return new WindowsDLL(strName);
+#elif NETSTANDARD2_0
+            return new CrossPlatformNativeLibrary(strName);
 #else
             return new DotnetNativeLibrary(strName);
 #endif
@@ -97,6 +99,36 @@ namespace Azimecha.Core {
 
         [DllImport("kernel32")]
         public static extern bool FreeLibrary(IntPtr hLibrary);
+    }
+#elif NETSTANDARD2_0
+    internal class CrossPlatformNativeLibrary : INativeLibrary {
+        private NativeLibraryLoader.NativeLibrary _lib;
+
+        public CrossPlatformNativeLibrary(string strName) {
+            _lib = new NativeLibraryLoader.NativeLibrary(strName);
+        }
+
+        public void Dispose()
+            => _lib.Dispose();
+
+        public IntPtr GetSymbolAddress(string strName) {
+            IntPtr pSymbol = _lib.LoadFunction(strName);
+            if (pSymbol == IntPtr.Zero)
+                throw new EntryPointNotFoundException($"The entry point {strName} could not be found");
+            return pSymbol;
+        }
+
+        public void MakePermanent() {
+            GCHandle.Alloc(_lib);
+        }
+
+        public IntPtr? TryGetSymbolAddress(string strName) {
+            try {
+                return GetSymbolAddress(strName);
+            } catch (Exception ex) {
+                return null;
+            }
+        }
     }
 #else
     internal class DotnetNativeLibrary : INativeLibrary {

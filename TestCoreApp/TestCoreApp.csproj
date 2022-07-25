@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
     <ProjectReference Include="..\Azimecha.Drawing.AGG\Azimecha.Drawing.AGG.csproj" />
     <ProjectReference Include="..\Azimecha.Drawing\Azimecha.Drawing.csproj" />
   </ItemGroup>

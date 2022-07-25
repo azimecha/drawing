@@ -1,9 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net20;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net20;netcoreapp3.0;netstandard2.0</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+		<PackageReference Include="NativeLibraryLoader" Version="1.0.12"/>
+	</ItemGroup>
 
 </Project>

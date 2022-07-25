@@ -56,6 +56,7 @@ namespace Azimecha.Core {
                 case CPUFeature.MMX:
                     return Architecture == CPUArchitecture.IA32 || Architecture == CPUArchitecture.AMD64;
 
+#if NETCOREAPP
                 case CPUFeature.SSE1:
                     return System.Runtime.Intrinsics.X86.Sse.IsSupported;
 
@@ -64,7 +65,13 @@ namespace Azimecha.Core {
 
                 case CPUFeature.SSE3:
                     return System.Runtime.Intrinsics.X86.Sse3.IsSupported;
-
+#else
+                case CPUFeature.SSE1:
+                case CPUFeature.SSE2:
+                case CPUFeature.SSE3:
+                    return false;
+#endif
+                
                 case CPUFeature.PAE:
                 case CPUFeature.NX:
                 default:
