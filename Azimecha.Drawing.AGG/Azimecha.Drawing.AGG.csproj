@@ -5,12 +5,14 @@
 		<TargetFrameworks>net20;netcoreapp3.0;netstandard2.0</TargetFrameworks>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
+
 	<ItemGroup>
-	  <ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
-	  <ProjectReference Include="..\Azimecha.Drawing\Azimecha.Drawing.csproj" />
+		<ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
+		<ProjectReference Include="..\Azimecha.Drawing\Azimecha.Drawing.csproj" />
 	</ItemGroup>
+
 	<ItemGroup>
-	  <None Update="aggwrap32.dll" CopyToOutputDirectory="PreserveNewest" />
-	  <None Update="aggwrap64.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="aggwrap32.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="aggwrap64.dll" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 </Project>

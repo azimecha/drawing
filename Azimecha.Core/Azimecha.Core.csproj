@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-		<PackageReference Include="NativeLibraryLoader" Version="1.0.12"/>
+		<PackageReference Include="NativeLibraryLoader" Version="1.0.12" />
 	</ItemGroup>
 
 </Project>

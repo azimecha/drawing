@@ -6,7 +6,7 @@ using Azimecha.Drawing;
 namespace TestCoreApp {
     internal class Program {
         static void Main(string[] args) {
-            IDrawingAPI api = DrawingFactory.GetDrawingAPI();
+            IDrawingAPI api = new Azimecha.Drawing.AGG.DrawingAPI();
 
             IBitmap bmMain = api.LoadBitmap(typeof(Program).Assembly.GetManifestResourceStream("TestCoreApp.cringe.jpg"));
             IBitmap bmStretch = api.LoadBitmap(GetResource("tface.png"));

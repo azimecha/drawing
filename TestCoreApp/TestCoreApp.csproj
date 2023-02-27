@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -26,6 +26,8 @@
     <ProjectReference Include="..\Azimecha.Core\Azimecha.Core.csproj" />
     <ProjectReference Include="..\Azimecha.Drawing.AGG\Azimecha.Drawing.AGG.csproj" />
     <ProjectReference Include="..\Azimecha.Drawing\Azimecha.Drawing.csproj" />
+
+	  <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="7.0.0-*" />
   </ItemGroup>
 
 </Project>

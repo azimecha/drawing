@@ -5,32 +5,21 @@ using System.Text;
 namespace Azimecha.Core {
     public class ThreadSafeLazy<T> {
         private T _objValue;
-        private FactoryDelegate _procFactory;
-        private object[] _arrParams;
+        private Factories<T>.FactoryDelegate _procFactory;
         private object _objMutex = new object();
         private bool _bInitComplete = false;
 
-        public delegate T FactoryDelegate();
-
         public ThreadSafeLazy() {
-            _procFactory = DefaultFactory;
+            _procFactory = Factories<T>.DefaultFactory;
         }
 
-        public ThreadSafeLazy(FactoryDelegate procFactory) {
+        public ThreadSafeLazy(Factories<T>.FactoryDelegate procFactory) {
             _procFactory = procFactory;
         }
 
         public ThreadSafeLazy(params object[] arrCtorParams) {
-            _arrParams = arrCtorParams;
-            _procFactory = ParameterizedFactory;
+            _procFactory = () => Factories<T>.ParameterizedFactory(arrCtorParams);
         }
-
-        private T DefaultFactory()
-            => (T)Activator.CreateInstance(typeof(T), nonPublic: true);
-
-        private T ParameterizedFactory()
-            => (T)Activator.CreateInstance(typeof(T), bindingAttr: System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic
-                | System.Reflection.BindingFlags.Instance, binder: null, args: _arrParams, culture: null);
 
         public T Value {
             get {
@@ -46,7 +35,6 @@ namespace Azimecha.Core {
         private void Init() {
             _objValue = _procFactory();
             _procFactory = null;
-            _arrParams = null;
             _bInitComplete = true;
         }
     }

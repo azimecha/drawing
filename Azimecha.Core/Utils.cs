@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -155,7 +159,207 @@ namespace Azimecha.Core {
                     return attrib;
             return null;
         }
+
+        public static object InvokeAndUnwrap(this MethodBase meth, object objTarget, params object[] arrArgs) {
+            try {
+                return meth.Invoke(objTarget, arrArgs);
+            } catch (TargetInvocationException ex) {
+                throw ex.InnerException;
+            }
+        }
+
+        public static void DoAll(params Subroutine[] arrToDo)
+            => DoAll((IEnumerable<Subroutine>)arrToDo);
+
+        public static void DoAll(IEnumerable<Subroutine> enuToDo) {
+            List<Exception> lstExceptions = null;
+
+            foreach (Subroutine act in enuToDo) {
+                try {
+                    act();
+                } catch (Exception ex) {
+                    if (lstExceptions is null)
+                        lstExceptions = new List<Exception>();
+                    lstExceptions.Add(ex);
+                }
+            }
+
+            MultipleErrorException.MaybeThrow(lstExceptions);
+        }
+
+        public static T[] ToArray<T>(this IEnumerable<T> enuObjects)
+            => new List<T>(enuObjects).ToArray();
+
+        public static object[] ToObjectArray(this IEnumerable enuObjects) {
+            List<object> lstObjects = new List<object>();
+            foreach (object obj in enuObjects)
+                lstObjects.Add(obj);
+            return lstObjects.ToArray();
+        }
+
+        public static IEnumerable<TOut> TransformObjects<TOut>(this IEnumerable enuObjects,
+            TransformerDelegate<object, TOut> procTransformer)
+        {
+            foreach (object objIn in enuObjects)
+                yield return procTransformer(objIn);
+        }
+
+        public static IEnumerable<TOut> Transform<TIn, TOut>(this IEnumerable<TIn> enuObjects, 
+            TransformerDelegate<TIn, TOut> procTransformer)
+        {
+            foreach (TIn valIn in enuObjects)
+                yield return procTransformer(valIn);
+        }
+
+        public static string Join(this IEnumerable enuObjects, string strSeparator)
+            => string.Join(strSeparator, enuObjects.TransformObjects(obj => obj.ToString()).ToArray());
+
+        public static bool IsEmpty(this IEnumerable enuObjects) {
+            foreach (object obj in enuObjects)
+                return false;
+            return true;
+        }
+
+        public static int GetCount(this IEnumerable enuObjects) {
+            int nCount = 0;
+            foreach (object obj in enuObjects)
+                nCount++;
+            return nCount;
+        }
+
+        public static T GetItem<T>(this IEnumerable<T> enuObjects, int nDesiredIndex) {
+            int nCurIndex = 0;
+
+            foreach (T val in enuObjects) {
+                if (nCurIndex == nDesiredIndex)
+                    return val;
+                else
+                    nCurIndex++;
+            }
+
+            throw new IndexOutOfRangeException($"The index {nDesiredIndex} was beyond the end "
+                + $"of the {nCurIndex} item enumerable");
+        }
+
+        public static IEnumerable<TValue> Flatten<TValue, TEnumerable>(this IEnumerable<TEnumerable> enuOfEnumerables)
+            where TEnumerable : IEnumerable<TValue>    
+        {
+            foreach (TEnumerable enuCur in enuOfEnumerables)
+                foreach (TValue val in enuCur)
+                    yield return val;
+        }
+
+        public static IEnumerable<T> GetInstancesOf<T>(this IEnumerable enuObjects) {
+            foreach (object obj in enuObjects)
+                if (obj is T val)
+                    yield return val;
+        }
+
+        public static TOut[] AttemptTransformAll<TIn, TOut>(this IEnumerable<TIn> enuObjects, 
+            TransformerDelegate<TIn, TOut> procTransform)
+        {
+            List<TOut> lstResults = new List<TOut>();
+            List<Exception> lstExceptions = null;
+
+            foreach (TIn val in enuObjects) {
+                try {
+                    lstResults.Add(procTransform(val));
+                } catch (Exception ex) {
+                    if (lstExceptions is null)
+                        lstExceptions = new List<Exception>();
+                    lstExceptions.Add(ex);
+                }
+            }
+
+            MultipleErrorException.MaybeThrow(lstExceptions);
+            return lstResults.ToArray();
+        }
+
+        public static void AttemptOnAll<T>(this IEnumerable<T> enuObjects,
+            Subroutine<T> procAction)
+        {
+            List<Exception> lstExceptions = null;
+
+            foreach (T val in enuObjects) {
+                try {
+                    procAction(val);
+                } catch (Exception ex) {
+                    if (lstExceptions is null)
+                        lstExceptions = new List<Exception>();
+                    lstExceptions.Add(ex);
+                }
+            }
+
+            MultipleErrorException.MaybeThrow(lstExceptions);
+        }
+
+        public static T LastElementOrDefault<T>(this T[] arrObjects)
+            => (arrObjects.Length > 0) ? arrObjects[arrObjects.Length - 1] : default(T);
+
+        public static bool TryGetFirstMatch<T>(this IEnumerable<T> enuObjects, FilteringDelegate<T> procFilter, 
+            out T valIfFound)
+        {
+            foreach (T valCur in enuObjects) {
+                if (procFilter(valCur)) {
+                    valIfFound = valCur;
+                    return true;
+                }
+            }
+
+            valIfFound = default(T);
+            return false;
+        }
+
+        public static T GetFirstOr<T>(this IEnumerable<T> enuObjects, T valDefault = default(T)) {
+            foreach (T valCur in enuObjects)
+                return valCur;
+            return valDefault;
+        }
+
+        public static bool ContainsReference<T>(this IEnumerable<T> enuObjects, T valSearchFor) where T : class {
+            foreach (T valCur in enuObjects)
+                if (ReferenceEquals(valCur, valSearchFor))
+                    return true;
+            return false;
+        }
+
+        public static D ToDelegate<D>(this MethodInfo infMethod) where D : Delegate
+            => (D)Delegate.CreateDelegate(typeof(D), infMethod, true);
+
+        public static D ToDelegate<D>(this MethodInfo infMethod, object objBoundArg) where D : Delegate
+            => (D)Delegate.CreateDelegate(typeof(D), objBoundArg, infMethod, true);
+
+        public static TMember GetMemberByName<TMember>(this Type typeContaining, string strName) where TMember : MemberInfo {
+            TMember infMemb = typeContaining.GetMember(strName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public 
+                | BindingFlags.NonPublic | BindingFlags.IgnoreCase | BindingFlags.FlattenHierarchy).GetInstancesOf<TMember>().GetFirstOr(null);
+
+            if (infMemb is null)
+                throw new MissingMemberException($"Could not find {strName} in {typeContaining.FullName}");
+
+            return infMemb;
+        }
+
+        public static unsafe void Clear(this IDataBuffer buf) {
+            ulong* pBufAsUlong = (ulong*)buf.DataPointer;
+            for (long nCurrentUlong = 0; nCurrentUlong < buf.DataSize / sizeof(ulong); nCurrentUlong++) {
+                *pBufAsUlong = 0;
+                pBufAsUlong++;
+            }
+
+            byte* pRemainingData = (byte*)pBufAsUlong;
+            for (int nCurrentByte = 0; nCurrentByte < buf.DataSize % sizeof(ulong); nCurrentByte++) {
+                *pRemainingData = 0;
+                pRemainingData++;
+            }
+        }
     }
+
+    public delegate void Subroutine();
+    public delegate void Subroutine<T1>(T1 val1);
+    public delegate void Subroutine<T1, T2>(T1 val1, T2 val2);
+    public delegate void Subroutine<T1, T2, T3>(T1 val1, T2 val2, T3 val3);
+    public delegate TOut TransformerDelegate<TIn, TOut>(TIn val);
+    public delegate bool FilteringDelegate<TIn>(TIn val);
 }
 
 namespace Azimecha.Drawing.Internal {
